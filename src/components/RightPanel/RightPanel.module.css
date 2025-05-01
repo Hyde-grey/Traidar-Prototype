@@ -1,0 +1,155 @@
+/** Right Panel **/
+.rightPanel {
+  height: 100%;
+  flex: 0 0 69%;
+  border-radius: 2rem;
+  background-color: #1d1e2280;
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  position: relative;
+}
+
+.rightPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  padding: 1px;
+  background: linear-gradient(to right, #3a5045, #666666);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.panelHeader {
+  width: 100%;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+
+  .searchBar {
+    width: 80%;
+    height: 50px;
+    border: 1px solid #32353b;
+    background-color: #1d1e22;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
+    }
+  }
+}
+
+.button {
+  height: 50px;
+  width: 160px;
+  color: #6c757d;
+  border: 1px solid #32353b;
+  background-color: #1d1e22;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.button:hover {
+  border-color: #3a5045;
+}
+
+.toneSelector {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 200px;
+  gap: 0.5rem;
+}
+
+.toneSelector span {
+  color: #6c757d;
+  white-space: nowrap;
+}
+
+.toneSelector select {
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  color: #6a94ff;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  padding: 0.5rem;
+}
+
+.toneSelector select option {
+  background-color: #1d1e22;
+  color: #6c757d;
+  padding: 0.5rem;
+}
+
+.blueText {
+  font-weight: 600;
+  color: #6a94ff;
+}
+
+select.button {
+  appearance: none;
+  padding-right: 2.5rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  transition: all 0.5s ease-in-out;
+}
+
+select.button:focus {
+  outline: none;
+  border-color: #3a5045;
+}
+
+select.button option {
+  background-color: #1d1e22;
+  color: #6c757d;
+  padding: 0.5rem;
+}
+
+.toneSelector::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  pointer-events: none;
+}

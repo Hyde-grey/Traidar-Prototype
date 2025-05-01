@@ -1,0 +1,55 @@
+/** Left Panel **/
+.leftPanel {
+  height: 100%;
+  flex: 0 0 30%;
+  border-radius: 2rem;
+  background-color: #1d1e2280;
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
+  position: relative;
+}
+
+.leftPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 2rem;
+  padding: 1px;
+  background: linear-gradient(to right, #3a5045, #666666);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.panelHeader {
+  width: 100%;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1rem;
+
+  .searchBar {
+    width: 80%;
+    height: 50px;
+    border: 1px solid #32353b;
+    background-color: #1d1e22;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem;
+
+    input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      color: inherit;
+      font-family: inherit;
+      font-size: inherit;
+    }
+  }
+}
