@@ -114,7 +114,7 @@ function App() {
               <p>Analysis</p>
             </div>
           </div>
-          <div className="sign">Login</div>
+          <div className="sign ">Login</div>
         </div>
 
         <div className="dashboardContainer">
