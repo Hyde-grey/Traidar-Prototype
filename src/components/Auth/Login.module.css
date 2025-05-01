@@ -1,0 +1,12 @@
+.sign {
+  border: 1px solid #06ac01;
+  background-color: #07ac0117;
+  border-radius: 10px;
+  width: 105px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
