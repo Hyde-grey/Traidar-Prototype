@@ -13,6 +13,7 @@ export type CryptoMarketData = {
   baseAsset?: string;
   quoteAsset?: string;
   iconUrl?: string;
+  name?: string;
 };
 
 // Common cryptocurrency mapping from Binance symbol to CoinGecko ID
@@ -39,6 +40,32 @@ const CRYPTO_ID_MAPPING: Record<string, string> = {
   ETC: "ethereum-classic",
   SHIB: "shiba-inu",
   VET: "vechain",
+};
+
+// A mapping of crypto symbols to their full names
+const CRYPTO_NAME_MAPPING: Record<string, string> = {
+  BTC: "Bitcoin",
+  ETH: "Ethereum",
+  BNB: "Binance Coin",
+  SOL: "Solana",
+  XRP: "XRP",
+  ADA: "Cardano",
+  DOGE: "Dogecoin",
+  TRX: "TRON",
+  DOT: "Polkadot",
+  MATIC: "Polygon",
+  LTC: "Litecoin",
+  AVAX: "Avalanche",
+  LINK: "Chainlink",
+  UNI: "Uniswap",
+  ATOM: "Cosmos",
+  XLM: "Stellar",
+  NEAR: "NEAR Protocol",
+  ALGO: "Algorand",
+  FIL: "Filecoin",
+  ETC: "Ethereum Classic",
+  SHIB: "Shiba Inu",
+  VET: "VeChain",
 };
 
 export const useFetchCryptoData = (
@@ -73,6 +100,7 @@ export const useFetchCryptoData = (
           ) {
             coinData[symbol] = {
               id: coin.id,
+              name: coin.name,
               image: coin.image,
               market_cap: coin.market_cap,
             };
@@ -140,10 +168,12 @@ export const useFetchCryptoData = (
 
             // Try to get the icon from CoinGecko data
             let iconUrl = DefaultCryptoIcon;
+            let cryptoName = "";
 
             // First check if we have the data in our CoinGecko cache
             if (coinGeckoData[baseAsset] && coinGeckoData[baseAsset].image) {
               iconUrl = coinGeckoData[baseAsset].image;
+              cryptoName = coinGeckoData[baseAsset].name || "";
             }
             // Otherwise, check if we can map it to a known CoinGecko ID
             else if (CRYPTO_ID_MAPPING[baseAsset]) {
@@ -154,7 +184,13 @@ export const useFetchCryptoData = (
                 coinGeckoData[id.toUpperCase()].image
               ) {
                 iconUrl = coinGeckoData[id.toUpperCase()].image;
+                cryptoName = coinGeckoData[id.toUpperCase()].name || "";
               }
+            }
+
+            // If we still don't have a name, use our fallback mapping
+            if (!cryptoName && CRYPTO_NAME_MAPPING[baseAsset]) {
+              cryptoName = CRYPTO_NAME_MAPPING[baseAsset];
             }
 
             return {
@@ -169,6 +205,7 @@ export const useFetchCryptoData = (
               volume: ticker.volume,
               quoteVolume: ticker.quoteVolume,
               iconUrl: iconUrl,
+              name: cryptoName || baseAsset,
             };
           });
 

@@ -29,6 +29,7 @@ const SearchAssets = () => {
         .filter((crypto) => crypto.baseAsset && crypto.iconUrl)
         .map((crypto) => ({
           symbol: crypto.baseAsset as string,
+          name: crypto.name || (crypto.baseAsset as string),
           exchange: "Binance",
           iconUrl: crypto.iconUrl as string,
           price: parseFloat(crypto.lastPrice),
@@ -77,9 +78,13 @@ const SearchAssets = () => {
   const filteredAssets =
     searchTerm.trim() === ""
       ? [] // Don't filter if search is empty - we'll show categories instead
-      : [...trendingAssets, ...allAssets].filter((crypto) =>
-          crypto.symbol.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+      : [...trendingAssets, ...allAssets].filter((crypto) => {
+          const searchTermLower = searchTerm.toLowerCase();
+          return (
+            crypto.symbol.toLowerCase().includes(searchTermLower) ||
+            crypto.name.toLowerCase().includes(searchTermLower)
+          );
+        });
 
   // Handle clicking outside the dropdown to close it
   useEffect(() => {
@@ -115,6 +120,9 @@ const SearchAssets = () => {
       asset.priceChangePercent >= 0 ? "+" : ""
     }${asset.priceChangePercent.toFixed(2)}%`;
 
+    // Format name to show only if different from symbol
+    const displayName = asset.name !== asset.symbol ? asset.name : null;
+
     return (
       <div
         key={asset.symbol}
@@ -127,7 +135,7 @@ const SearchAssets = () => {
         <div className={styles.assetIcon}>
           <img
             src={asset.iconUrl || DefaultCryptoIcon}
-            alt={asset.symbol}
+            alt={asset.name}
             onError={(e) => {
               (e.target as HTMLImageElement).src = DefaultCryptoIcon;
             }}
@@ -135,6 +143,9 @@ const SearchAssets = () => {
         </div>
         <div className={styles.assetInfo}>
           <span className={styles.assetSymbol}>{asset.symbol}</span>
+          {displayName && (
+            <span className={styles.assetName}>{displayName}</span>
+          )}
           <span className={styles.assetExchange}>({asset.exchange})</span>
         </div>
         <div className={styles.cryptoPrice}>
