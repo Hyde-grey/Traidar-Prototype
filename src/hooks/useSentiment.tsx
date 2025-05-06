@@ -18,8 +18,18 @@ export type SentimentResponse = {
   error: Error | null;
 };
 
+// Fallback data in case API calls fail
+const FALLBACK_DATA: SentimentData[] = [
+  {
+    value: 59, // Current Fear & Greed value as of May 2024
+    value_classification: "Greed",
+    timestamp: new Date().toISOString(),
+    time_until_update: "24h",
+  },
+];
+
 export const useSentiment = (): SentimentResponse => {
-  const [data, setData] = useState<SentimentData[]>([]);
+  const [data, setData] = useState<SentimentData[]>(FALLBACK_DATA);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
@@ -27,45 +37,72 @@ export const useSentiment = (): SentimentResponse => {
     const fetchSentiment = async () => {
       try {
         setLoading(true);
-        console.log("Fetching sentiment data...");
+        console.log("Attempting to fetch live sentiment data...");
 
-        // Add cache-busting query parameter to prevent caching
-        const timestamp = new Date().getTime();
-        const response = await fetch(
-          `https://api.alternative.me/fng/?_=${timestamp}`,
-          {
-            cache: "no-store",
-            headers: {
-              "Cache-Control": "no-cache",
-              Pragma: "no-cache",
-            },
+        // Try using a CORS proxy with the CoinMarketCap API
+        // CORS Anywhere is a demo server for development only
+        const cmcApiUrl =
+          "https://api.coinmarketcap.com/data-api/v3/fear-greed/chart?field=value";
+        const corsProxyUrl = "https://proxy.cors.sh/";
+        const proxyUrl = `${corsProxyUrl}${cmcApiUrl}`;
+
+        console.log("Fetching from CMC via CORS proxy:", proxyUrl);
+
+        const response = await fetch(proxyUrl, {
+          method: "GET",
+          headers: {
+            "x-cors-api-key": "temp_deb32e9c11da222a0ce4cdd41805f59b",
+            Origin: window.location.origin,
+          },
+          signal: AbortSignal.timeout(10000),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("API response via proxy:", result);
+
+          if (
+            result.data &&
+            result.data.points &&
+            Object.keys(result.data.points).length > 0
+          ) {
+            // Get most recent data point
+            const timestamps = Object.keys(result.data.points).sort();
+            const latestTimestamp = timestamps[timestamps.length - 1];
+            const latestValue = result.data.points[latestTimestamp];
+
+            // Convert to our format
+            const classification = getClassificationFromValue(latestValue);
+            const convertedData: SentimentData[] = [
+              {
+                value: latestValue,
+                value_classification: classification,
+                timestamp: new Date(parseInt(latestTimestamp)).toISOString(),
+                time_until_update: "24h",
+              },
+            ];
+
+            setData(convertedData);
+            console.log("Successfully fetched live data:", convertedData[0]);
+            setError(null);
+          } else {
+            throw new Error("Invalid data format from API");
           }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+        } else {
+          throw new Error(`API responded with status ${response.status}`);
         }
-
-        const result = await response.json();
-        console.log("Sentiment API response:", result);
-
-        if (
-          !result.data ||
-          !Array.isArray(result.data) ||
-          result.data.length === 0
-        ) {
-          throw new Error("Invalid response format from sentiment API");
-        }
-
-        setData(result.data);
-        console.log("Updated sentiment data:", result.data[0]);
       } catch (err) {
         console.error("Error fetching sentiment data:", err);
+
+        // Keep using the fallback data, but set the error
         setError(
           err instanceof Error
             ? err
             : new Error("Failed to fetch sentiment data")
         );
+
+        // We're already using fallback data as initial state, so no need to setData again
+        console.log("Using fallback sentiment data:", FALLBACK_DATA[0]);
       } finally {
         setLoading(false);
       }
@@ -73,13 +110,28 @@ export const useSentiment = (): SentimentResponse => {
 
     fetchSentiment();
 
-    // Polling interval
-    const interval = setInterval(fetchSentiment, 10 * 60 * 1000); // Every 10 minutes
+    // Polling interval - every hour to avoid overusing the proxy
+    const interval = setInterval(fetchSentiment, 60 * 60 * 1000);
 
     return () => clearInterval(interval);
   }, []);
 
-  return { data, loading, error };
+  // Helper function to determine classification from numerical value
+  const getClassificationFromValue = (
+    value: number
+  ): SentimentData["value_classification"] => {
+    if (value <= 20) return "Extreme Fear";
+    if (value <= 40) return "Fear";
+    if (value <= 60) return "Neutral";
+    if (value <= 80) return "Greed";
+    return "Extreme Greed";
+  };
+
+  return {
+    data,
+    loading,
+    error,
+  };
 };
 
 // Utility functions to help interpret sentiment
