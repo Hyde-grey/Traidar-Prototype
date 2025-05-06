@@ -1,7 +1,7 @@
 import ContentLoader, { IContentLoaderProps } from "react-content-loader";
 import styles from "./Loader.module.css";
 import { useRef, useEffect, useState } from "react";
-import FadeInMotion from "../../motion/fadeInMotion";
+import FadeInMotion from "../../../common/motion/fadeInMotion";
 
 /**
  * Skeleton loader for the left panel that takes full width and height

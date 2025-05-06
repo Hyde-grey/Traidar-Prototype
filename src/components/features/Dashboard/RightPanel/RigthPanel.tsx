@@ -1,4 +1,4 @@
-import Button from "../../Button/Button";
+import Button from "../../../../components/common/Button/Button";
 import Loader from "../Loader/Loader";
 
 import styles from "./RightPanel.module.css";

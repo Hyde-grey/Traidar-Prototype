@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import DefaultCryptoIcon from "../../../../assets/SVG/DefaultCrypto.svg";
+import DefaultCryptoIcon from "../../../../../assets/SVG/DefaultCrypto.svg";
 
 export type CryptoMarketData = {
   symbol: string;

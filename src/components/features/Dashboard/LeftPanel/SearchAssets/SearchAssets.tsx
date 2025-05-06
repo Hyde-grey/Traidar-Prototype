@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import SearchIcon from "../../../../assets/SVG/Search.svg";
-import ChartArrow from "../../../../assets/SVG/ChartArrow.svg";
-import DefaultCryptoIcon from "../../../../assets/SVG/DefaultCrypto.svg";
+import SearchIcon from "../../../../../assets/SVG/Search.svg";
+import ChartArrow from "../../../../../assets/SVG/ChartArrow.svg";
+import DefaultCryptoIcon from "../../../../../assets/SVG/DefaultCrypto.svg";
 import { useFetchCryptoData } from "./useFetchData";
 import styles from "./SearchAssets.module.css";
 

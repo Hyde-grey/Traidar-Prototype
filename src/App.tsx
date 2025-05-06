@@ -1,16 +1,13 @@
-import Logo from "./components/Header/Logo/Logo";
-import Nav from "./components/Header/Nav/Nav";
-import Login from "./components/Header/Auth/Login";
-
-import "./App.css";
 import { useState } from "react";
-import LeftPanel from "./components/Dashboard/LeftPanel/LeftPanel";
-import RightPanel from "./components/Dashboard/RightPanel/RigthPanel";
+
+import { Logo, Nav, Login } from "./components/common";
+import Dashboard from "./components/features/Dashboard/Dashboard";
+import { NavType } from "./types";
+
+import "./styles/App.css";
 
 function App() {
-  const [activeNav, setActiveNav] = useState<"portfolio" | "news" | "analysis">(
-    "analysis"
-  );
+  const [activeNav, setActiveNav] = useState<NavType>("analysis");
   return (
     <>
       <div className="mainContainer">
@@ -20,10 +17,7 @@ function App() {
           <Login />
         </div>
 
-        <div className="dashboardContainer">
-          <LeftPanel />
-          <RightPanel />
-        </div>
+        <Dashboard />
       </div>
     </>
   );

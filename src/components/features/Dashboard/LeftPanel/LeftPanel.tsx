@@ -1,5 +1,5 @@
-import SavedIcon from "../../../assets/SVG/Saved.svg";
-import Button from "../../Button/Button";
+import SavedIcon from "../../../../assets/SVG/Saved.svg";
+import Button from "../../../../components/common/Button/Button";
 import SearchAssets from "./SearchAssets/SearchAssets";
 import Loader from "../Loader/Loader";
 import styles from "./LeftPanel.module.css";

@@ -1,5 +1,5 @@
 import styles from "./Loader.module.css";
-import FadeInMotion from "../../motion/fadeInMotion";
+import FadeInMotion from "../../../common/motion/fadeInMotion";
 
 /**
  * Default loader/placeholder that shows when no content is selected

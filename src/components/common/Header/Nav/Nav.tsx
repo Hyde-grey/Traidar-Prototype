@@ -1,6 +1,6 @@
-import PortfolioIcon from "../../../assets/SVG/Portfolio.svg";
-import NewsIcon from "../../../assets/SVG/News.svg";
-import AnalysisIcon from "../../../assets/SVG/Analysis.svg";
+import PortfolioIcon from "../../../../assets/SVG/Portfolio.svg";
+import NewsIcon from "../../../../assets/SVG/News.svg";
+import AnalysisIcon from "../../../../assets/SVG/Analysis.svg";
 import styles from "./Nav.module.css";
 
 type NavProps = {
