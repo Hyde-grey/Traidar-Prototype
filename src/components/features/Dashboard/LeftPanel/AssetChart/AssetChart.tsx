@@ -35,15 +35,13 @@ type KlineData = [
 
 const AssetChart = () => {
   const chartRef = useRef<HTMLDivElement>(null);
-  const { assetData, selectedAsset, timeRange, setTimeRange } =
-    useContext(AssetContext);
+  const { selectedAsset, timeRange, setTimeRange } = useContext(AssetContext);
   const [retryCount, setRetryCount] = useState(0);
   const [chartDimensions, setChartDimensions] = useState({
     width: 0,
     height: 0,
   });
   const [isResizing, setIsResizing] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
 
   // Get kline (candlestick) data from REST API
   const getInterval = (): [string, Record<string, string>] => {
@@ -206,7 +204,6 @@ const AssetChart = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         const isNowVisible = entries[0].isIntersecting;
-        setIsVisible(isNowVisible);
 
         // If chart becomes visible and we have data, redraw it
         if (

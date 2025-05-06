@@ -7,23 +7,6 @@ import {
 import { FadeInMotion } from "../../../../../components/common";
 import { AnimatePresence } from "framer-motion";
 
-// Helper function to determine if sentiment is positive or negative
-const getSentimentTone = (
-  classification: string
-): "Positive" | "Negative" | "Neutral" => {
-  switch (classification) {
-    case "Extreme Fear":
-    case "Fear":
-      return "Negative";
-    case "Greed":
-    case "Extreme Greed":
-      return "Positive";
-    case "Neutral":
-    default:
-      return "Neutral";
-  }
-};
-
 /**
  * Displays market sentiment information with visual indicators
  */
