@@ -47,6 +47,7 @@
   height: 400px;
   position: relative;
   overflow: hidden;
+  transition: height 0.3s ease;
 }
 
 .noAssetSelected {
@@ -59,26 +60,131 @@
   font-style: italic;
   background-color: rgba(26, 27, 31, 0.4);
   border-radius: 12px;
+  transition: height 0.3s ease;
 }
 
-.loader,
-.error {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.loaderContainer,
+.errorContainer {
+  width: 100%;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  z-index: 2;
+  background-color: rgba(26, 27, 31, 0.4);
   border-radius: 8px;
+  margin-bottom: 16px;
+  transition: height 0.3s ease;
 }
 
+/* Remove the loader and error styles that were used as overlays */
+.loader,
 .error {
-  color: #ff5555;
+  display: none;
+}
+
+.spinnerContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.spinnerContainer span {
+  font-weight: 500;
+  position: relative;
+}
+
+.spinnerContainer span::after {
+  content: "...";
+  animation: ellipsis 1.5s infinite;
+  position: absolute;
+  overflow: hidden;
+  display: inline-block;
+  width: 0;
+  margin-left: 2px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  animation: rotate 1.5s linear infinite;
+}
+
+.spinner::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #ffffff;
+  border-right-color: rgba(255, 255, 255, 0.3);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  border-left-color: rgba(255, 255, 255, 0.5);
+}
+
+.retrying {
+  color: #ffc107;
+  animation: fadeInOut 2s infinite;
+}
+
+.retryButton {
+  margin-top: 16px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.retryButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.retryButton:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+.retryButton:hover::before {
+  left: 100%;
+}
+
+.retryButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .timeRangeSelector {
@@ -86,6 +192,7 @@
   justify-content: center;
   gap: 8px;
   margin-top: 16px;
+  flex-wrap: wrap;
 }
 
 .timeButton {
@@ -97,6 +204,9 @@
   cursor: pointer;
   font-size: 12px;
   transition: all 0.2s ease;
+  min-width: 40px;
+  position: relative;
+  overflow: hidden;
 }
 
 .timeButton:hover {
@@ -108,6 +218,10 @@
   background-color: #2d323a;
   color: #fff;
   border-color: #6c757d;
+}
+
+.timeButton:active {
+  transform: scale(0.95);
 }
 
 .axis path,
@@ -131,4 +245,223 @@
   100% {
     box-shadow: 0 0 0 0 rgba(0, 180, 0, 0);
   }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ellipsis {
+  0% {
+    width: 0;
+  }
+  33% {
+    width: 1ch;
+  }
+  66% {
+    width: 2ch;
+  }
+  100% {
+    width: 3ch;
+  }
+}
+
+@keyframes fadeInOut {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 1200px) {
+  .chart {
+    height: 350px;
+  }
+
+  .noAssetSelected {
+    height: 350px;
+  }
+
+  .loaderContainer,
+  .errorContainer {
+    height: 350px;
+  }
+}
+
+@media (max-width: 992px) {
+  .chartContainer {
+    padding: 14px;
+  }
+
+  .chart {
+    height: 300px;
+  }
+
+  .noAssetSelected {
+    height: 300px;
+  }
+
+  .loaderContainer,
+  .errorContainer {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .chartContainer {
+    padding: 12px;
+    margin-bottom: 16px;
+  }
+
+  .chart {
+    height: 250px;
+  }
+
+  .noAssetSelected {
+    height: 250px;
+  }
+
+  .loaderContainer,
+  .errorContainer {
+    height: 250px;
+    margin-bottom: 12px;
+  }
+
+  .timeRangeSelector {
+    gap: 6px;
+    padding: 0 4px;
+  }
+
+  .timeButton {
+    flex: 1;
+    min-width: initial;
+    padding: 6px 0;
+  }
+
+  .spinner {
+    width: 32px;
+    height: 32px;
+  }
+
+  .spinner::before {
+    border-width: 2.5px;
+  }
+
+  .spinnerContainer {
+    gap: 12px;
+    font-size: 13px;
+    padding: 18px;
+  }
+
+  .spinnerContainer span {
+    font-size: 12px;
+  }
+
+  .axis text {
+    font-size: 8px;
+  }
+
+  .retryButton {
+    padding: 7px 16px;
+    font-size: 12px;
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .chartContainer {
+    padding: 10px;
+  }
+
+  .chart {
+    height: 200px;
+  }
+
+  .noAssetSelected {
+    height: 200px;
+  }
+
+  .loaderContainer,
+  .errorContainer {
+    height: 200px;
+    margin-bottom: 10px;
+  }
+
+  .timeButton {
+    padding: 5px 0;
+    font-size: 10px;
+    flex-basis: calc(16.66% - 5px);
+  }
+
+  .timeRangeSelector {
+    gap: 5px;
+    margin-top: 12px;
+  }
+
+  .chartHeader h3 {
+    font-size: 14px;
+  }
+
+  .liveBadge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .liveBadge::before {
+    width: 6px;
+    height: 6px;
+    margin-right: 4px;
+  }
+
+  .spinner {
+    width: 28px;
+    height: 28px;
+  }
+
+  .spinner::before {
+    border-width: 2px;
+  }
+
+  .spinnerContainer {
+    gap: 10px;
+    font-size: 12px;
+    padding: 14px;
+    letter-spacing: 0.3px;
+  }
+
+  .retryButton {
+    padding: 6px 14px;
+    font-size: 11px;
+    margin-top: 12px;
+  }
+}
+
+.errorContainer {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(26, 27, 31, 0.4);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: height 0.3s ease;
+  color: #ff5555;
+  text-align: center;
+}
+
+.errorContainer p {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ff5555;
 }

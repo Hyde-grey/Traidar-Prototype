@@ -30,9 +30,20 @@
   padding: 2.5rem;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   gap: 1rem;
   flex-shrink: 0;
+}
+
+/* Make the search component stretch */
+.panelHeader > *:first-child {
+  flex: 1;
+  min-width: 0; /* Allow shrinking below content size */
+}
+
+/* Keep the saved button from shrinking too much */
+.panelHeader > *:last-child {
+  flex: 0 0 auto;
 }
 
 .panelContent {
@@ -52,4 +63,65 @@
   width: 100%;
   padding: 16px;
   overflow-y: auto;
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 1200px) {
+  .panelHeader {
+    padding: 2rem;
+  }
+
+  .panelContent {
+    padding: 0 1.25rem 1.25rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .panelHeader {
+    padding: 1.5rem;
+  }
+
+  .panelContent {
+    padding: 0 1rem 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .leftPanel {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 500px;
+    max-height: none;
+  }
+
+  .panelContent {
+    max-height: none;
+  }
+}
+
+@media (max-width: 576px) {
+  .leftPanel {
+    border-radius: 1.5rem;
+    min-height: 400px;
+  }
+
+  .panelHeader {
+    padding: 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* In mobile view, search takes full width already */
+  .panelHeader > *:first-child,
+  .panelHeader > *:last-child {
+    flex: initial;
+  }
+
+  .panelContent {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .assetDetails {
+    padding: 8px;
+  }
 }

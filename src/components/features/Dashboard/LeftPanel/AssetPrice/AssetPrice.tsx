@@ -5,7 +5,12 @@ import DefaultCryptoIcon from "../../../../../assets/SVG/DefaultCrypto.svg";
 import styles from "./AssetPrice.module.css";
 import { AssetContext } from "../../../../../context/AssetContext";
 import { useLiveData } from "../../../../../hooks/useLiveData";
+import { FadeInMotion } from "../../../../../components/common";
+import { AnimatePresence } from "framer-motion";
 
+/**
+ * Displays cryptocurrency price information with live updates
+ */
 const AssetPrice = () => {
   const { assetData } = useContext(AssetContext);
   const { liveData, isConnected } = useLiveData();
@@ -46,39 +51,46 @@ const AssetPrice = () => {
   const isPricePositive = priceChangePercent >= 0;
 
   return (
-    <div className={styles.assetPriceContainer}>
-      <div className={styles.assetPriceHeader}>
-        <div className={styles.assetNameTag}>
-          <img
-            src={assetData.iconUrl || DefaultCryptoIcon}
-            alt={assetData.symbol}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = DefaultCryptoIcon;
-            }}
-          />
-          <h5>{assetData.symbol}</h5>
+    <AnimatePresence mode="wait">
+      <FadeInMotion
+        key="asset-price"
+        transition={{ duration: 0.3, ease: "easeOut", delay: 0.2 }}
+      >
+        <div className={styles.assetPriceContainer}>
+          <div className={styles.assetPriceHeader}>
+            <div className={styles.assetNameTag}>
+              <img
+                src={assetData.iconUrl || DefaultCryptoIcon}
+                alt={assetData.symbol}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = DefaultCryptoIcon;
+                }}
+              />
+              <h5>{assetData.symbol}</h5>
+            </div>
+            <div
+              className={`${styles.assetChangePercent} ${
+                isPricePositive ? styles.positive : styles.negative
+              }`}
+            >
+              <img
+                src={ChartArrow}
+                alt="ChartArrow"
+                className={isPricePositive ? styles.arrowUp : styles.arrowDown}
+              />
+              <p>{pricePercent}</p>
+              {isConnected && <span className={styles.liveIndicator}></span>}
+            </div>
+          </div>
+          <div className={styles.priceContainer}>
+            <p>
+              <span className={styles.assetTotalPrice}>{totalPrice}</span>
+            </p>
+            <img src={Currency} alt="USD" />
+          </div>
         </div>
-        <div
-          className={`${styles.assetChangePercent} ${
-            isPricePositive ? styles.positive : styles.negative
-          }`}
-        >
-          <img
-            src={ChartArrow}
-            alt="ChartArrow"
-            className={isPricePositive ? styles.arrowUp : styles.arrowDown}
-          />
-          <p>{pricePercent}</p>
-          {isConnected && <span className={styles.liveIndicator}></span>}
-        </div>
-      </div>
-      <div className={styles.priceContainer}>
-        <p>
-          <span className={styles.assetTotalPrice}>{totalPrice}</span>
-        </p>
-        <img src={Currency} alt="USD" />
-      </div>
-    </div>
+      </FadeInMotion>
+    </AnimatePresence>
   );
 };
 

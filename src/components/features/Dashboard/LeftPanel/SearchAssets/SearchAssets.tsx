@@ -5,6 +5,7 @@ import { AssetContext } from "../../../../../context/AssetContext";
 import SearchBar from "./SearchBar";
 import AssetList from "./AssetList";
 import { Asset } from "./types";
+import { FadeInMotion } from "../../../../../components/common";
 
 // List of trending assets to show at the top (in this order)
 const trendingSymbols = ["BTC", "ETH", "SOL"];
@@ -134,29 +135,34 @@ const SearchAssets = () => {
   };
 
   return (
-    <div className={styles.searchContainer}>
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        handleClearSearch={handleClearSearch}
-        setIsSearching={setIsSearching}
-        inputRef={inputRef}
-      />
+    <FadeInMotion
+      key="search-assets"
+      transition={{ duration: 0.3, ease: "easeInOut" }}
+    >
+      <div className={styles.searchContainer}>
+        <SearchBar
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          handleClearSearch={handleClearSearch}
+          setIsSearching={setIsSearching}
+          inputRef={inputRef}
+        />
 
-      {isSearching && (
-        <div ref={dropdownRef} className={styles.searchDropdown}>
-          <AssetList
-            trendingAssets={trendingAssets}
-            allAssets={allAssets}
-            filteredAssets={filteredAssets}
-            searchTerm={searchTerm}
-            loading={loading}
-            error={error}
-            onSelectAsset={handleSelectAsset}
-          />
-        </div>
-      )}
-    </div>
+        {isSearching && (
+          <div ref={dropdownRef} className={styles.searchDropdown}>
+            <AssetList
+              trendingAssets={trendingAssets}
+              allAssets={allAssets}
+              filteredAssets={filteredAssets}
+              searchTerm={searchTerm}
+              loading={loading}
+              error={error}
+              onSelectAsset={handleSelectAsset}
+            />
+          </div>
+        )}
+      </div>
+    </FadeInMotion>
   );
 };
 

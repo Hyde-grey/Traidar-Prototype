@@ -239,6 +239,27 @@ export const useFetchData = (
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const fetchWithTimeout = async (
+    url: string,
+    options: RequestInit = {},
+    timeout: number = 15000
+  ) => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+
+    try {
+      const response = await fetch(url, {
+        ...options,
+        signal: controller.signal,
+      });
+      clearTimeout(id);
+      return response;
+    } catch (error) {
+      clearTimeout(id);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     const fetchDataFromAPI = async () => {
       const baseUrl = `https://api.binance.com/api/v3`;
@@ -249,24 +270,51 @@ export const useFetchData = (
         });
       }
 
-      try {
-        setLoading(true);
-        const response = await fetch(url.toString());
-        if (!response.ok)
-          throw new Error(`HTTP error! status: ${response.status}`);
-        const result = await response.json();
-        setData(result);
-        setError(null);
-      } catch (error) {
-        console.error("API Error:", error);
-        setError(
-          error instanceof Error
-            ? error
-            : new Error("An unknown error occurred")
-        );
-        setData([]);
-      } finally {
-        setLoading(false);
+      let attempts = 0;
+      const maxAttempts = 3;
+      const timeout = 10000; // 10 seconds timeout
+
+      while (attempts < maxAttempts) {
+        try {
+          setLoading(true);
+
+          // Use the fetchWithTimeout function with a timeout
+          const response = await fetchWithTimeout(url.toString(), {}, timeout);
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+          setData(result);
+          setError(null);
+          break; // Success, exit the retry loop
+        } catch (error) {
+          attempts++;
+          console.error(
+            `API Error (attempt ${attempts}/${maxAttempts}):`,
+            error
+          );
+
+          // Only set error if we've exhausted all attempts
+          if (attempts >= maxAttempts) {
+            setError(
+              error instanceof Error
+                ? error
+                : new Error("Failed to fetch data after multiple attempts")
+            );
+            setData([]);
+          } else {
+            // Wait before retrying - increasing delay with each attempt
+            await new Promise((resolve) =>
+              setTimeout(resolve, 1000 * attempts)
+            );
+          }
+        } finally {
+          if (attempts >= maxAttempts || !error) {
+            setLoading(false);
+          }
+        }
       }
     };
 

@@ -10,7 +10,11 @@ import Sentiment from "./Sentiment/Sentiment";
 import AssetPrice from "./AssetPrice/AssetPrice";
 import AssetChart from "./AssetChart/AssetChart";
 import { AssetContext } from "../../../../context/AssetContext";
+import { FadeInMotion } from "../../../../components/common";
 
+/**
+ * The main left panel component displaying asset data and charts
+ */
 const LeftPanel = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { assetData } = useContext(AssetContext);
@@ -30,16 +34,26 @@ const LeftPanel = () => {
 
   return (
     <div className={styles.leftPanel}>
+      {/* Panel Header with search and buttons */}
       <div className={styles.panelHeader}>
         <SearchAssets />
-        <Button svg={<img src={SavedIcon} alt="Saved" />} text="Saved" />
+        <FadeInMotion
+          key="saved-button"
+          transition={{ duration: 0.3, ease: "easeOut", delay: 0.1 }}
+        >
+          <Button svg={<img src={SavedIcon} alt="Saved" />} text="Saved" />
+        </FadeInMotion>
       </div>
+
+      {/* Panel Content with main data display */}
       <div className={styles.panelContent}>
         <AnimatePresence mode="wait">
           {isLoading ? (
             <LeftPanelLoader key="loader" />
           ) : assetData ? (
             <div className={styles.assetDetails}>
+              {/* Each component is self-contained with its own FadeInMotion */}
+              {/* The staggered effect comes from the increasing delays */}
               <Sentiment />
               <AssetPrice />
               <AssetChart />
