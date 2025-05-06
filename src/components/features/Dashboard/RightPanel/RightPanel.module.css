@@ -153,3 +153,74 @@ select.button option {
   background-size: contain;
   pointer-events: none;
 }
+
+/* Media queries for responsive layout */
+@media (max-width: 1200px) {
+  .panelHeader {
+    padding: 2rem;
+  }
+
+  .button {
+    width: 140px;
+  }
+}
+
+@media (max-width: 992px) {
+  .panelHeader {
+    padding: 1.5rem;
+
+    .searchBar {
+      width: 70%;
+    }
+  }
+
+  .button {
+    width: 120px;
+    padding: 0.75rem;
+  }
+
+  .toneSelector {
+    width: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rightPanel {
+    flex: 0 0 auto;
+    height: 500px;
+  }
+
+  .panelHeader {
+    padding: 1.25rem;
+
+    .searchBar {
+      height: 45px;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .rightPanel {
+    border-radius: 1.5rem;
+    height: 450px;
+  }
+
+  .panelHeader {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+
+    .searchBar {
+      width: 100%;
+      height: 40px;
+      border-radius: 20px;
+    }
+  }
+
+  .button {
+    width: 100%;
+    height: 40px;
+    justify-content: center;
+  }
+}

@@ -7,4 +7,27 @@
 
   position: relative;
   color: #6c757d;
+  gap: 1%;
+}
+
+/* Media queries for responsive layout */
+@media (max-width: 1200px) {
+  .dashboardContainer {
+    gap: 0.8%;
+  }
+}
+
+@media (max-width: 992px) {
+  .dashboardContainer {
+    gap: 0.5%;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    min-height: 80vh;
+  }
 }

@@ -7,3 +7,16 @@
   height: 40px;
   width: auto;
 }
+
+/* Media queries for responsive layout */
+@media (max-width: 768px) {
+  .logo img {
+    height: 35px;
+  }
+}
+
+@media (max-width: 576px) {
+  .logo img {
+    height: 30px;
+  }
+}
