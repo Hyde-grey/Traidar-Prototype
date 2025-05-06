@@ -1,0 +1,114 @@
+.assetPriceContainer {
+  /* background-color: #1a1e23; */
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  color: #fff;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+}
+
+.assetPriceHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.assetNameTag {
+  display: flex;
+  align-items: center;
+  border: 1px solid #6c757d;
+  border-radius: 35px;
+  padding-right: 10px;
+  gap: 12px;
+}
+
+.assetNameTag img {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: contain;
+  background-color: #2d323a;
+  padding: 4px;
+  margin: 4px;
+}
+
+.assetNameTag h5 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.assetChangePercent {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-weight: 600;
+}
+
+.assetChangePercent.positive {
+  background-color: rgba(0, 180, 0, 0.1);
+  color: #00b400;
+}
+
+.assetChangePercent.negative {
+  background-color: rgba(255, 50, 50, 0.1);
+  color: #ff5050;
+}
+
+.assetChangePercent img {
+  width: 16px;
+  height: 16px;
+}
+
+.arrowUp {
+  transform: rotate(0deg);
+}
+
+.arrowDown {
+  transform: rotate(180deg);
+  filter: invert(21%) sepia(100%) saturate(7414%) hue-rotate(359deg)
+    brightness(94%) contrast(118%);
+}
+
+.priceContainer {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.assetTotalPrice {
+  font-size: 2.5rem;
+  font-weight: 500;
+}
+
+.priceContainer img {
+  width: 24px;
+  height: 24px;
+  margin-left: 10px;
+}
+
+.liveIndicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #00b400;
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 180, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 5px rgba(0, 180, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 180, 0, 0);
+  }
+}
