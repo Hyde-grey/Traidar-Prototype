@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
-import SearchIcon from "../../../../../assets/SVG/Search.svg";
-import ChartArrow from "../../../../../assets/SVG/ChartArrow.svg";
-import DefaultCryptoIcon from "../../../../../assets/SVG/DefaultCrypto.svg";
+import { useState, useRef, useEffect, useContext } from "react";
 import { useFetchCryptoData } from "./useFetchData";
 import styles from "./SearchAssets.module.css";
+import { AssetContext } from "../../../../../context/AssetContext";
+import SearchBar from "./SearchBar";
+import AssetList from "./AssetList";
+import { Asset } from "./types";
 
 // List of trending assets to show at the top (in this order)
 const trendingSymbols = ["BTC", "ETH", "SOL"];
@@ -11,15 +12,20 @@ const trendingSymbols = ["BTC", "ETH", "SOL"];
 // List of assets to show at the top of "All Assets" section
 const allAssetsOrder = ["ADA", "BNB", "XRP", "DOT", "DOGE", "LINK"];
 
+/**
+ * SearchAssets component with search functionality and asset lists
+ */
 const SearchAssets = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const { data: cryptoData, loading, error } = useFetchCryptoData();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { selectedAsset, setSelectedAsset, setAssetData } =
+    useContext(AssetContext);
 
-  const [trendingAssets, setTrendingAssets] = useState<any[]>([]);
-  const [allAssets, setAllAssets] = useState<any[]>([]);
+  const [trendingAssets, setTrendingAssets] = useState<Asset[]>([]);
+  const [allAssets, setAllAssets] = useState<Asset[]>([]);
 
   // Prepare data for display
   useEffect(() => {
@@ -74,6 +80,13 @@ const SearchAssets = () => {
     }
   }, [cryptoData]);
 
+  // Update search term when selectedAsset changes
+  useEffect(() => {
+    if (selectedAsset) {
+      setSearchTerm(selectedAsset);
+    }
+  }, [selectedAsset]);
+
   // Filter assets based on search term
   const filteredAssets =
     searchTerm.trim() === ""
@@ -105,130 +118,42 @@ const SearchAssets = () => {
     };
   }, []);
 
-  // Render an asset item with price data
-  const renderAssetItem = (asset: any) => {
-    // Format prices appropriately
-    const formattedPrice =
-      asset.price >= 1000
-        ? `$${asset.price.toLocaleString(undefined, {
-            maximumFractionDigits: 2,
-          })}`
-        : `$${asset.price.toFixed(2)}`;
+  // Add a clear handler function
+  const handleClearSearch = () => {
+    setSearchTerm("");
+    setSelectedAsset("");
+    setAssetData(null);
+    setIsSearching(false);
+  };
 
-    // Format percentages with consistent style
-    const formattedPercent = `${
-      asset.priceChangePercent >= 0 ? "+" : ""
-    }${asset.priceChangePercent.toFixed(2)}%`;
-
-    // Format name to show only if different from symbol
-    const displayName = asset.name !== asset.symbol ? asset.name : null;
-
-    return (
-      <div
-        key={asset.symbol}
-        className={styles.assetItem}
-        onClick={() => {
-          setSearchTerm(asset.symbol);
-          setIsSearching(false);
-        }}
-      >
-        <div className={styles.assetIcon}>
-          <img
-            src={asset.iconUrl || DefaultCryptoIcon}
-            alt={asset.name}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = DefaultCryptoIcon;
-            }}
-          />
-        </div>
-        <div className={styles.assetInfo}>
-          <span className={styles.assetSymbol}>{asset.symbol}</span>
-          {displayName && (
-            <span className={styles.assetName}>{displayName}</span>
-          )}
-          <span className={styles.assetExchange}>({asset.exchange})</span>
-        </div>
-        <div className={styles.cryptoPrice}>
-          <span className={styles.price}>{formattedPrice}</span>
-          <span
-            className={`${styles.priceChange} ${
-              asset.priceChangePercent >= 0 ? styles.positive : styles.negative
-            }`}
-          >
-            {formattedPercent}
-          </span>
-        </div>
-      </div>
-    );
+  const handleSelectAsset = (asset: Asset) => {
+    setSelectedAsset(asset.symbol);
+    setSearchTerm(asset.symbol);
+    setIsSearching(false);
+    setAssetData(asset);
   };
 
   return (
     <div className={styles.searchContainer}>
-      <div className={styles.searchBar}>
-        <img src={SearchIcon} alt="Search" />
-        <input
-          ref={inputRef}
-          type="search"
-          placeholder="Search Assets"
-          onFocus={() => setIsSearching(true)}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          value={searchTerm}
-        />
-      </div>
+      <SearchBar
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+        handleClearSearch={handleClearSearch}
+        setIsSearching={setIsSearching}
+        inputRef={inputRef}
+      />
 
       {isSearching && (
         <div ref={dropdownRef} className={styles.searchDropdown}>
-          {loading ? (
-            <div className={styles.loadingMessage}>Loading assets...</div>
-          ) : error ? (
-            <div className={styles.errorMessage}>Error loading data</div>
-          ) : searchTerm.trim() !== "" ? (
-            // Show filtered results when searching
-            filteredAssets.length === 0 ? (
-              <div className={styles.noResultsMessage}>
-                No assets found matching "{searchTerm}"
-              </div>
-            ) : (
-              filteredAssets.map((asset) => renderAssetItem(asset))
-            )
-          ) : (
-            // Show categorized assets when not searching
-            <>
-              {/* Trending Assets Section */}
-              <div className={styles.sectionHeader}>
-                <h2>Trending Assets</h2>
-                <img
-                  src={ChartArrow}
-                  alt="Trending Up"
-                  className={styles.trendingIcon}
-                />
-              </div>
-
-              <div className={styles.assetList}>
-                {trendingAssets.length > 0 ? (
-                  trendingAssets.map((asset) => renderAssetItem(asset))
-                ) : (
-                  <div className={styles.loadingMessage}>
-                    No trending assets found
-                  </div>
-                )}
-              </div>
-
-              {/* All Assets Section */}
-              <div className={styles.sectionHeader}>
-                <h2>All Assets</h2>
-                <div className={styles.divider}></div>
-              </div>
-
-              <div className={`${styles.assetList} ${styles.scrollable}`}>
-                {allAssets.length > 0 ? (
-                  allAssets.map((asset) => renderAssetItem(asset))
-                ) : (
-                  <div className={styles.loadingMessage}>No assets found</div>
-                )}
-              </div>
-            </>
-          )}
+          <AssetList
+            trendingAssets={trendingAssets}
+            allAssets={allAssets}
+            filteredAssets={filteredAssets}
+            searchTerm={searchTerm}
+            loading={loading}
+            error={error}
+            onSelectAsset={handleSelectAsset}
+          />
         </div>
       )}
     </div>

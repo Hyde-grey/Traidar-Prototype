@@ -14,6 +14,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem;
+  position: relative;
 
   input {
     width: 100%;
@@ -204,4 +205,30 @@
   padding: 16px;
   text-align: center;
   color: #6c757d;
+}
+
+.clearButton {
+  background: none;
+  border: none;
+  color: #6c757d;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 8px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #fff;
 }
