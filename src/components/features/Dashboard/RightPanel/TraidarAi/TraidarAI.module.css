@@ -1,0 +1,76 @@
+.chatContainer {
+  position: inherit;
+  width: 100%;
+  height: calc(100% - 130px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.conversation {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  margin-bottom: 20px;
+
+  min-height: 0;
+}
+
+.promptContainer {
+  width: 100%;
+  min-height: 148px;
+  flex-shrink: 0;
+  align-items: center;
+  border: 1px solid #32353b;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 20px;
+    margin: 0;
+    font-size: inherit;
+    color: white;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    margin: 20px;
+  }
+}
+
+.promptBox {
+  width: 100%;
+}
+
+.sendButton {
+  display: flex;
+  align-items: center;
+
+  button {
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 576px) {
+  .chatContainer {
+    height: calc(100% - 166px);
+  }
+  .promptContainer {
+    min-height: 50px;
+    align-items: center;
+    button {
+      margin: 0px;
+      padding-right: 20px;
+    }
+  }
+}

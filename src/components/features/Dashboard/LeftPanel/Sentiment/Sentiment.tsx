@@ -6,12 +6,15 @@ import {
 } from "../../../../../hooks/useSentiment";
 import { FadeInMotion } from "../../../../../components/common";
 import { AnimatePresence } from "framer-motion";
+import { useContext } from "react";
+import { AssetContext } from "../../../../../context/AssetContext";
 
 /**
- * Displays market sentiment information with visual indicators
+ * Displays asset-based sentiment information with visual indicators
  */
 const Sentiment = () => {
-  const { data, loading, error } = useSentiment();
+  const { data, loading } = useSentiment();
+  const { assetData } = useContext(AssetContext);
 
   // Format date for display
   const date = new Date();
@@ -33,15 +36,12 @@ const Sentiment = () => {
         <div className={styles.sentimentContainer}>
           <div className={styles.sentimentHeader}>
             <h4>{formattedDate}</h4>
-            {error && (
-              <small className={styles.apiError}>
-                API Error: Using fallback data
-              </small>
-            )}
           </div>
 
           <h3>
-            <span className={styles.white}>Market Sentiment is</span>{" "}
+            <span className={styles.white}>
+              {assetData ? `${assetData.symbol} Sentiment is` : null}
+            </span>
             {loading ? (
               <span className={styles.loading}>Loading</span>
             ) : latestSentiment ? (

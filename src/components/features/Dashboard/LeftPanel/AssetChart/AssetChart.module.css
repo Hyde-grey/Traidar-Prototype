@@ -44,7 +44,7 @@
 
 .chart {
   width: 100%;
-  height: 400px;
+  min-height: 400px;
   position: relative;
   overflow: hidden;
   transition: height 0.3s ease;
@@ -74,12 +74,6 @@
   border-radius: 8px;
   margin-bottom: 16px;
   transition: height 0.3s ease;
-}
-
-/* Remove the loader and error styles that were used as overlays */
-.loader,
-.error {
-  display: none;
 }
 
 .spinnerContainer {
@@ -446,15 +440,6 @@
 }
 
 .errorContainer {
-  width: 100%;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(26, 27, 31, 0.4);
-  border-radius: 8px;
-  margin-bottom: 16px;
-  transition: height 0.3s ease;
   color: #ff5555;
   text-align: center;
 }

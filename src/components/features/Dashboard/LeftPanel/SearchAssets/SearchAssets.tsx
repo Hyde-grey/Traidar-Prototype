@@ -88,6 +88,16 @@ const SearchAssets = () => {
     }
   }, [selectedAsset]);
 
+  // Watch for changes in searchTerm that don't match selectedAsset
+  useEffect(() => {
+    // If user is typing something different than the selected asset,
+    // clear the selected asset to prevent stale state
+    if (searchTerm && selectedAsset && searchTerm !== selectedAsset) {
+      setSelectedAsset("");
+      setAssetData(null);
+    }
+  }, [searchTerm, selectedAsset, setSelectedAsset, setAssetData]);
+
   // Filter assets based on search term
   const filteredAssets =
     searchTerm.trim() === ""
@@ -96,7 +106,7 @@ const SearchAssets = () => {
           const searchTermLower = searchTerm.toLowerCase();
           return (
             crypto.symbol.toLowerCase().includes(searchTermLower) ||
-            crypto.name.toLowerCase().includes(searchTermLower)
+            (crypto.name && crypto.name.toLowerCase().includes(searchTermLower))
           );
         });
 
@@ -134,6 +144,15 @@ const SearchAssets = () => {
     setAssetData(asset);
   };
 
+  // Handle search term changes from the search bar
+  const handleSearchTermChange = (term: string) => {
+    setSearchTerm(term);
+    if (term !== selectedAsset) {
+      // When typing a new search, automatically show dropdown
+      setIsSearching(true);
+    }
+  };
+
   return (
     <FadeInMotion
       key="search-assets"
@@ -142,7 +161,7 @@ const SearchAssets = () => {
       <div className={styles.searchContainer}>
         <SearchBar
           searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
+          setSearchTerm={handleSearchTermChange}
           handleClearSearch={handleClearSearch}
           setIsSearching={setIsSearching}
           inputRef={inputRef}

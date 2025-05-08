@@ -168,8 +168,6 @@ const AssetChart = () => {
       chartHeight = 350; // Large screens
     }
 
-    console.log(`Setting chart dimensions to ${containerWidth}x${chartHeight}`);
-
     setChartDimensions({
       width: containerWidth,
       height: chartHeight,
@@ -213,7 +211,6 @@ const AssetChart = () => {
           !isResizing &&
           selectedAsset
         ) {
-          console.log("Chart is now visible, redrawing...");
           drawChart();
         }
       },
@@ -288,10 +285,6 @@ const AssetChart = () => {
       }
       return;
     }
-
-    console.log(
-      `Drawing chart with ${candleData.length} data points at ${chartDimensions.width}x${chartDimensions.height}`
-    );
 
     // Update the latest candle with live data if available
     const livePrice = getLivePrice();
@@ -433,8 +426,6 @@ const AssetChart = () => {
             })}`
           );
       }
-
-      console.log("Chart successfully drawn");
     } catch (err) {
       console.error("Error drawing chart:", err);
     }

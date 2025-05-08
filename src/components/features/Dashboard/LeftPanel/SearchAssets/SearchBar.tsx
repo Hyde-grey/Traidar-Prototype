@@ -21,14 +21,14 @@ const SearchBar: FC<SearchBarProps> = ({
   inputRef,
 }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-    if (e.target.value === "") {
-      handleClearSearch();
-    }
-  };
+    const newValue = e.target.value;
+    setSearchTerm(newValue);
 
-  const handleInput = (e: FormEvent<HTMLInputElement>) => {
-    if (e.currentTarget.value === "") {
+    // Always show the dropdown when typing
+    setIsSearching(true);
+
+    // Clear selected asset if the search field is emptied
+    if (newValue === "") {
       handleClearSearch();
     }
   };
@@ -42,7 +42,6 @@ const SearchBar: FC<SearchBarProps> = ({
         placeholder="Search Assets"
         onFocus={() => setIsSearching(true)}
         onChange={handleInputChange}
-        onInput={handleInput}
         value={searchTerm}
       />
       {searchTerm && (

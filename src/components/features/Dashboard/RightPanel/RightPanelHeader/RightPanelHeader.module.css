@@ -1,57 +1,18 @@
-/** Right Panel **/
-.rightPanel {
-  height: 100%;
-  flex: 0 0 69%;
-  border-radius: 2rem;
-  background-color: rgba(29, 30, 34, 0.5);
-  backdrop-filter: blur(34px);
-  -webkit-backdrop-filter: blur(34px);
-  position: relative;
-}
-
-.rightPanel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 2rem;
-  padding: 1px;
-  background: linear-gradient(to right, #3a5045, #666666);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
 .panelHeader {
   width: 100%;
   padding: 2.5rem;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
   gap: 1rem;
+}
 
-  .searchBar {
-    width: 80%;
-    height: 50px;
-    border: 1px solid #32353b;
-    background-color: #1d1e22;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 1rem;
-
-    input {
-      width: 100%;
-      border: none;
-      outline: none;
-      background-color: transparent;
-      color: inherit;
-      font-family: inherit;
-      font-size: inherit;
-    }
-  }
+.chatOptionsContainer {
+  width: 100%;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
 }
 
 .button {
@@ -114,31 +75,6 @@
   color: #6a94ff;
 }
 
-select.button {
-  appearance: none;
-  padding-right: 2.5rem;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px;
-  transition: all 0.5s ease-in-out;
-}
-
-select.button:focus {
-  outline: none;
-  border-color: #3a5045;
-}
-
-select.button option {
-  background-color: #1d1e22;
-  color: #6c757d;
-  padding: 0.5rem;
-}
-
 .toneSelector::after {
   content: "";
   position: absolute;
@@ -168,10 +104,6 @@ select.button option {
 @media (max-width: 992px) {
   .panelHeader {
     padding: 1.5rem;
-
-    .searchBar {
-      width: 70%;
-    }
   }
 
   .button {
@@ -185,37 +117,18 @@ select.button option {
 }
 
 @media (max-width: 768px) {
-  .rightPanel {
-    flex: 0 0 auto;
-    height: 500px;
-  }
-
   .panelHeader {
     padding: 1.25rem;
-
-    .searchBar {
-      height: 45px;
-    }
   }
 }
 
 @media (max-width: 576px) {
-  .rightPanel {
-    border-radius: 1.5rem;
-    height: 100dvh;
-  }
-
   .panelHeader {
     padding: 1rem;
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
-
-    .searchBar {
-      width: 100%;
-      height: 40px;
-      border-radius: 20px;
-    }
+    flex-direction: column-reverse;
   }
 
   .button {
