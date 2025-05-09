@@ -1,4 +1,4 @@
-import { FC, RefObject, FormEvent } from "react";
+import { FC, RefObject } from "react";
 import SearchIcon from "../../../../../assets/SVG/Search.svg";
 import styles from "./SearchAssets.module.css";
 
