@@ -1,11 +1,10 @@
 /* Layout & Container Styles */
 .chatContainer {
-  position: relative;
-  width: 100%;
-  height: calc(100% - 80px); /* Account for header padding */
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: 8px;
   overflow: hidden;
 }
 
@@ -15,6 +14,7 @@
   flex-direction: column !important;
   height: 100% !important;
   overflow: hidden !important;
+  color: rgba(255, 255, 255, 0.87) !important;
 }
 
 /* Messages Container */
@@ -40,121 +40,6 @@
   margin-top: auto !important;
   background: #1d1e22 !important;
   width: 100% !important;
-}
-
-/* Prompt Container & Input Styles */
-.promptContainer {
-  width: 100%;
-  min-height: 148px;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #32353b;
-  border-radius: 12px;
-  height: calc(100% - 166px);
-
-  input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    padding: 20px;
-    margin: 0;
-    font-size: inherit;
-    color: white;
-  }
-
-  button {
-    background-color: transparent !important;
-    border: none;
-    margin: 20px;
-  }
-}
-
-.promptBox {
-  width: 100%;
-}
-
-.promptText {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
-  text-align: center;
-}
-
-/* Send Button Styles */
-.sendButton {
-  display: flex;
-  align-items: center;
-
-  button {
-    cursor: pointer;
-  }
-}
-
-/* Error Handling Styles */
-.errorContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 2rem;
-  gap: 1rem;
-}
-
-.errorText {
-  color: #dc2626;
-  font-size: 1rem;
-  text-align: center;
-}
-
-.retryButton {
-  padding: 0.5rem 1rem;
-  background-color: #2564eb00;
-  color: white;
-  border: none;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: background-color 150ms;
-
-  &:hover {
-    background-color: #1d4ed8;
-  }
-
-  &:focus {
-    outline: 2px solid #60a5fa;
-    outline-offset: 2px;
-  }
-}
-
-/* Welcome Message Styles */
-.welcomeMessage {
-  padding: 1.25rem;
-  background: rgba(17, 25, 40, 0.75);
-  border-radius: 12px;
-  margin-bottom: 1.5rem;
-  border: 1px solid #32353b;
-  backdrop-filter: blur(4px);
-}
-
-.welcomeTitle {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.87);
-  margin-bottom: 0.75rem;
-}
-
-.welcomeText {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.5;
-}
-
-/* Amplify AI Conversation Global Overrides */
-:global(.amplify-ai-conversation) {
-  color: rgba(255, 255, 255, 0.87) !important;
 }
 
 /* Message Text Colors */
@@ -187,6 +72,21 @@
       display: none;
     }
   }
+}
+
+:global(.amplify-button) {
+  background-color: transparent !important;
+}
+
+:global(.amplify-internal-button-background-color) {
+  background-color: #2a2b30;
+}
+
+:global(.amplify-ai-conversation__message__content) {
+  background-color: #2a2b30;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 /* Form & Input Styles */
@@ -260,10 +160,5 @@
     min-height: 100px !important;
     max-height: 100px !important;
     padding: 12px !important;
-  }
-
-  .promptContainer {
-    min-height: 50px;
-    align-items: center;
   }
 }
