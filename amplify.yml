@@ -6,8 +6,10 @@ applications:
           commands:
             - nvm use 20
             - yarn install
+            - amplify pull --appId d184akopj344wh --envName main --yes
         build:
           commands:
+            - amplify generate outputs --output-path=./amplify_outputs.json
             - yarn build
       artifacts:
         baseDirectory: dist
