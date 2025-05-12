@@ -9,9 +9,9 @@ import { AnimatePresence } from "framer-motion";
 import Sentiment from "./Sentiment/Sentiment";
 import AssetPrice from "./AssetPrice/AssetPrice";
 // import AssetChart from "./AssetChart/AssetChart";
-import TradingViewWidget from "./TradingviewChart/TradingViewChart";
 import { AssetContext } from "../../../../context/AssetContext";
 import { FadeInMotion } from "../../../../components/common";
+import AssetChart from "./AssetChart/AssetChart";
 
 /**
  * The main left panel component displaying asset data and charts
@@ -57,8 +57,7 @@ const LeftPanel = () => {
               {/* The staggered effect comes from the increasing delays */}
               <Sentiment />
               <AssetPrice />
-              <TradingViewWidget />
-              {/* Additional asset details can go here */}
+              <AssetChart />
             </div>
           ) : (
             <Loader key="placeholder" />

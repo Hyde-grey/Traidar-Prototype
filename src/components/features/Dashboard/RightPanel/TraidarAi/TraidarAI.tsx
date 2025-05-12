@@ -5,40 +5,34 @@ import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../../../../../../amplify/data/resource";
 import styles from "./TraidarAI.module.css";
 import { useEffect, useState } from "react";
-import { fetchUserAttributes } from "aws-amplify/auth";
+import { useUser } from "../../../../../context/UserContext";
+import { clearConversation } from "../../../../../client";
 
 const client = generateClient<Schema>();
 const { useAIConversation } = createAIHooks(client);
 
 function TraidarAI() {
   const [error, setError] = useState<Error | null>(null);
-  const [userName, setUserName] = useState<string>("User");
-  const [userPicture, setUserPicture] = useState<string | null>(null);
-  const [{ data: { messages }, isLoading }, handleSendMessage] = useAIConversation("chat");
+  const { userName, userPicture, isAuthenticated } = useUser();
+  const [{ data: { messages }, isLoading: isConversationLoading }, handleSendMessage] = useAIConversation("chat");
 
+  // Clear conversation when user signs out
   useEffect(() => {
-    async function initializeChat() {
-      try {
-        const attributes = await fetchUserAttributes();
-        if (attributes.email) {
-          setUserName(attributes.email);
-        }
-        if (attributes.picture) {
-          setUserPicture(attributes.picture);
-        }
-      } catch (error) {
-        setError(error as Error);
-      }
+    if (!isAuthenticated) {
+      clearConversation();
     }
-
-    initializeChat();
-  }, []);
+  }, [isAuthenticated]);
 
   const handleImageError = () => {
-    setUserPicture(null);
+    // Avatar will fall back to initials
   };
 
   const wrappedHandleSendMessage: SendMessage = async (input) => {
+    if (!isAuthenticated) {
+      setError(new Error("Please sign in to use the chat"));
+      return;
+    }
+
     try {
       const formattedInput = {
         content: Array.isArray(input.content) ? input.content : [input.content],
@@ -62,12 +56,32 @@ function TraidarAI() {
     );
   }
 
+  if (isConversationLoading) {
+    return (
+      <div className={styles.chatContainer}>
+        <div className="loading-message">
+          Loading chat...
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className={styles.chatContainer}>
+        <div className="info-message">
+          Please sign in to use the chat feature.
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.chatContainer}>
       <AIConversation
         welcomeMessage="Hi, I'm Pip, your personal trading assistant. How can I help you today?"
         messages={messages}
-        isLoading={isLoading}
+        isLoading={isConversationLoading}
         handleSendMessage={wrappedHandleSendMessage}
         avatars={{
           user: {
