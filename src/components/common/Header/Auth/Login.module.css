@@ -27,3 +27,174 @@
     font-size: 0.85rem;
   }
 }
+
+/* Overlay dark background */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(23, 25, 29, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.modal {
+  background-color: rgba(23, 25, 29, 0.7);
+  border-radius: 16px;
+  max-width: 90%;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Force dark theme on all Amplify components */
+.modal :global(*) {
+  background-color: transparent !important;
+  font-family: "Manrope", sans-serif !important;
+  border: none !important;
+}
+
+.modal :global(.amplify-tabs-item[data-state="active"]) {
+  color: #2d9bf0 !important;
+  border-color: #2d9bf0 !important;
+}
+
+.modal :global(.amplify-tabs-item) {
+  color: #ffffff !important;
+}
+
+.modal :global(.amplify-divider) {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.modal :global(.amplify-heading) {
+  color: #ffffff !important;
+}
+
+.modal :global(.amplify-label) {
+  color: #ffffff !important;
+}
+
+.modal :global(.amplify-input) {
+  color: #ffffff !important;
+  background-color: rgba(37, 39, 40, 0.5) !important;
+  border-radius: 8px;
+  padding: 12px !important;
+  backdrop-filter: blur(4px);
+}
+
+.modal :global(.amplify-field-group__field-wrapper) {
+  border: none !important;
+  background-color: rgba(37, 39, 40, 0.5) !important;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.modal :global(.amplify-field) {
+  margin-bottom: 15px !important;
+}
+
+.modal :global(.amplify-button) {
+  border-radius: 8px !important;
+}
+
+.modal :global(.amplify-button--primary) {
+  background: linear-gradient(135deg, #2d9bf0, #1a70f2) !important;
+  border: none !important;
+  width: 100% !important;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 12px rgba(45, 155, 240, 0.2) !important;
+}
+
+.modal :global(.amplify-button--primary:hover) {
+  background: linear-gradient(135deg, #38a5fc, #2179f9) !important;
+  transform: translateY(-1px) !important;
+}
+
+.modal :global(.amplify-button[data-variation="link"]) {
+  color: #2d9bf0 !important;
+}
+
+.modal :global(.amplify-authenticator) {
+  box-shadow: none !important;
+  width: 100% !important;
+}
+
+.modal :global(.amplify-tabs) {
+  margin-bottom: 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.modal :global(.amplify-alert) {
+  border: none !important;
+  background-color: rgba(255, 107, 107, 0.15) !important;
+  color: #ff6b6b !important;
+  backdrop-filter: blur(4px);
+  border-radius: 8px !important;
+}
+
+.modal :global(.amplify-text) {
+  color: #ffffff !important;
+}
+
+.modal :global(.amplify-visually-hidden) {
+  color: #ffffff !important;
+}
+
+/* Ensure all form fields span full width of the modal */
+.modal :global(.amplify-form-section__content > div) {
+  width: 100% !important;
+}
+
+.modal :global(.amplify-input),
+.modal :global(.amplify-field-group__field-wrapper) {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Give all inputs a consistent height */
+.modal :global(.amplify-input) {
+  height: 48px !important;
+  min-height: 48px !important;
+}
+
+/* Space labels consistently above inputs */
+.modal :global(.amplify-label) {
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* Password toggle button visibility and color */
+.modal :global(.amplify-passwordfield button) {
+  opacity: 1 !important;
+  visibility: visible !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 1.2em !important;
+  padding: 0 8px !important;
+}
+.modal :global(.amplify-passwordfield button:hover) {
+  color: #ffffff !important;
+}
+
+/* Logout button style */
+.logout {
+  background-color: #ff657f1a !important;
+  border-color: #d32f2f !important;
+  color: #ffffff !important;
+}
+.logout:hover {
+  background-color: #b71c1c !important;
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.7;
+  cursor: default;
+}

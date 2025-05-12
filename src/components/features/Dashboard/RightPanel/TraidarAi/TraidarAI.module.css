@@ -1,34 +1,58 @@
+/* Layout & Container Styles */
 .chatContainer {
-  position: inherit;
+  position: relative;
   width: 100%;
-  height: calc(100% - 130px);
+  height: calc(100% - 80px); /* Account for header padding */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   padding: 20px;
+  overflow: hidden;
 }
 
-.conversation {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  overflow-y: auto;
-  margin-bottom: 20px;
-
-  min-height: 0;
+/* Conversation Container */
+:global(.amplify-ai-conversation) {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  overflow: hidden !important;
 }
 
+/* Messages Container */
+:global(.amplify-ai-conversation__messages) {
+  flex: 1 1 auto !important;
+  overflow-y: auto !important;
+  min-height: 0 !important;
+  margin-bottom: 16px !important;
+  padding-right: 8px !important;
+}
+
+/* Form Container */
+:global(.amplify-ai-conversation__form) {
+  flex: 0 0 auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  border: 1px solid #32353b !important;
+  border-radius: 12px !important;
+  padding: 16px !important;
+  margin-top: auto !important;
+  background: #1d1e22 !important;
+  width: 100% !important;
+}
+
+/* Prompt Container & Input Styles */
 .promptContainer {
   width: 100%;
   min-height: 148px;
   flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid #32353b;
   border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  height: calc(100% - 166px);
 
   input {
     width: 100%;
@@ -42,7 +66,7 @@
   }
 
   button {
-    background-color: transparent;
+    background-color: transparent !important;
     border: none;
     margin: 20px;
   }
@@ -52,6 +76,13 @@
   width: 100%;
 }
 
+.promptText {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  text-align: center;
+}
+
+/* Send Button Styles */
 .sendButton {
   display: flex;
   align-items: center;
@@ -61,16 +92,178 @@
   }
 }
 
+/* Error Handling Styles */
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.errorText {
+  color: #dc2626;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.retryButton {
+  padding: 0.5rem 1rem;
+  background-color: #2564eb00;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 150ms;
+
+  &:hover {
+    background-color: #1d4ed8;
+  }
+
+  &:focus {
+    outline: 2px solid #60a5fa;
+    outline-offset: 2px;
+  }
+}
+
+/* Welcome Message Styles */
+.welcomeMessage {
+  padding: 1.25rem;
+  background: rgba(17, 25, 40, 0.75);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #32353b;
+  backdrop-filter: blur(4px);
+}
+
+.welcomeTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.87);
+  margin-bottom: 0.75rem;
+}
+
+.welcomeText {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+/* Amplify AI Conversation Global Overrides */
+:global(.amplify-ai-conversation) {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+/* Message Text Colors */
+:global(.amplify-ai-conversation__message__text) {
+  color: rgba(255, 255, 255, 0.87) !important;
+}
+
+:global(.amplify-ai-conversation__message__sender__username) {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+:global(.amplify-ai-conversation__message__sender__timestamp) {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Assistant Message Styles */
+:global(.amplify-ai-conversation)
+  :global(.amplify-ai-conversation-message[data-participant-role="assistant"]) {
+  background-color: #f0f9ff;
+
+  :global(.amplify-ai-conversation-message-participant) {
+    color: #0f172a;
+
+    &::before {
+      content: "Traidar Agent";
+      display: inline;
+    }
+
+    span {
+      display: none;
+    }
+  }
+}
+
+/* Form & Input Styles */
+:global(.amplify-ai-conversation) :global(.amplify-textarea) {
+  color: rgba(255, 255, 255, 0.87) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 12px !important;
+  font-size: 1rem !important;
+  width: calc(100% - 48px) !important;
+  height: calc(100% - 24px) !important;
+  resize: none !important;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Avatar Styles */
+:global(.amplify-ai-conversation) :global(.amplify-avatar) {
+  background-color: #000000 !important;
+
+  img {
+    border-radius: 50% !important;
+  }
+}
+
+/* AI Avatar Specific Styles */
+:global(.amplify-ai-conversation)
+  :global(.amplify-ai-conversation-message[data-participant-role="assistant"])
+  :global(.amplify-avatar) {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  img {
+    height: 65% !important;
+    width: auto !important;
+    object-fit: contain !important;
+    padding: 4px;
+  }
+}
+
+/* User Avatar Specific Styles */
+:global(.amplify-ai-conversation)
+  :global(.amplify-ai-conversation-message[data-participant-role="user"])
+  :global(.amplify-avatar) {
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  img {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important;
+  }
+}
+
+/* Responsive Styles */
 @media (max-width: 576px) {
   .chatContainer {
-    height: calc(100% - 166px);
+    height: calc(100% - 60px);
+    padding: 16px;
   }
+
+  :global(.amplify-ai-conversation__form) {
+    min-height: 100px !important;
+    max-height: 100px !important;
+    padding: 12px !important;
+  }
+
   .promptContainer {
     min-height: 50px;
     align-items: center;
-    button {
-      margin: 0px;
-      padding-right: 20px;
-    }
   }
 }

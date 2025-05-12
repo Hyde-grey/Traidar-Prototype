@@ -25,3 +25,10 @@ dist-ssr
 # Exclude npm package-lock as this project uses yarn
 package-lock.json
 package-lock.json
+
+
+# amplify
+node_modules
+.amplify
+amplify_outputs*
+amplifyconfiguration*

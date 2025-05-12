@@ -1,12 +1,14 @@
 /** Right Panel **/
 .rightPanel {
-  height: 100%;
   flex: 0 0 69%;
   border-radius: 2rem;
   background-color: rgba(29, 30, 34, 0.5);
   backdrop-filter: blur(34px);
   -webkit-backdrop-filter: blur(34px);
   position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .rightPanel::before {
@@ -187,7 +189,9 @@ select.button option {
 @media (max-width: 768px) {
   .rightPanel {
     flex: 0 0 auto;
-    height: 500px;
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    min-height: 600px;
   }
 
   .panelHeader {
@@ -202,7 +206,9 @@ select.button option {
 @media (max-width: 576px) {
   .rightPanel {
     border-radius: 1.5rem;
-    height: 100dvh;
+    height: calc(100vh - 80px);
+    max-height: calc(100vh - 80px);
+    min-height: 500px;
   }
 
   .panelHeader {
