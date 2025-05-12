@@ -5,6 +5,7 @@ applications:
         preBuild:
           commands:
             - nvm use 20
+            - npm install -g @aws-amplify/cli
             - yarn install
             - amplify pull --appId d184akopj344wh --envName main --yes
         build:
