@@ -8,6 +8,7 @@ applications:
             - yarn install
         build:
           commands:
+            - amplify generate outputs --output-path=./amplify_outputs.json
             - yarn build
       artifacts:
         baseDirectory: dist
