@@ -10,6 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@aws-amplify/backend": "^1.16.1",
+    "@aws-amplify/backend-cli": "^1.7.1",
+    "@aws-amplify/ui-react": "^6.11.1",
     "@aws-amplify/ui-react-ai": "^1.4.1",
     "@types/d3": "^7.4.3",
     "aws-amplify": "^6.14.4",
@@ -20,8 +23,6 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@aws-amplify/backend": "^1.16.1",
-    "@aws-amplify/backend-cli": "^1.7.1",
     "@eslint/js": "^9.22.0",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.3",

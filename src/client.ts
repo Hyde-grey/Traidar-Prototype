@@ -1,8 +1,8 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
-import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
 import { Amplify } from "aws-amplify";
+import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import config from "../amplify_outputs.json";
 
 // Configure Amplify with the sandbox config

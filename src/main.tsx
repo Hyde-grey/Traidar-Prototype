@@ -6,10 +6,11 @@ import "@aws-amplify/ui-react/styles.css";
 import "./styles/index.css";
 import { Authenticator } from "@aws-amplify/ui-react";
 import App from "./App.tsx";
-import { configureAmplify } from "./amplify-config";
+import { Amplify } from "aws-amplify";
+import config from "../amplify_outputs.json";
 
 // Configure Amplify for Gen 2 using our config function
-configureAmplify();
+Amplify.configure(config);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
