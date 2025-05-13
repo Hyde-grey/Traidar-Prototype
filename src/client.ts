@@ -1,8 +1,12 @@
-import { generateClient } from "aws-amplify/data";
+import { generateClient } from "aws-amplify/api";
 import type { Schema } from "../amplify/data/resource";
 import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
 import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import { Amplify } from "aws-amplify";
+import config from "../amplify_outputs.json";
+
+// Note: Amplify is already configured in main.tsx
+// We're not reconfiguring it here to avoid overriding previous configurations
 
 /**
  * Amplify Data client for CRUD and AI routes
@@ -114,31 +118,8 @@ export async function logAIConfig() {
  */
 export async function logAIConfigDetails() {
   try {
-    // Log full Amplify configuration for debugging
-    const fullConfig = Amplify.getConfig() as any;
-    console.info('🔍 AI Configuration Details:', {
-      aiRegion: fullConfig.ai?.region || 'not configured',
-      conversationConfig: fullConfig.ai?.conversation || 'not configured',
-      authStatus: 'Checking...'
-    });
-    
-    // Log Auth configuration specifically
-    console.info('🔐 Auth Configuration:', {
-      hasAuth: !!fullConfig.Auth,
-      hasCognito: !!fullConfig.Auth?.Cognito,
-      userPoolId: fullConfig.Auth?.Cognito?.userPoolId || 'not configured',
-      userPoolClientId: fullConfig.Auth?.Cognito?.userPoolClientId || 'not configured',
-      hasLoginWith: !!fullConfig.Auth?.Cognito?.loginWith,
-      loginWithEmail: fullConfig.Auth?.Cognito?.loginWith?.email || false
-    });
-    
-    try {
-      const authSession = await fetchAuthSession();
-      console.info('🔐 Auth Session Valid:', !!authSession.tokens?.accessToken);
-    } catch (authErr) {
-      console.error('❌ Auth Session Error:', authErr);
-    }
-    
+    const config = await fetchAuthSession();
+    console.info('🔍 Authentication status:', !!config.tokens);
     return true;
   } catch (err) {
     console.error('❌ AI Config Diagnostic Error:', err);

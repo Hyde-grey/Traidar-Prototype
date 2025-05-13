@@ -11,7 +11,6 @@ export function configureAmplify() {
   Amplify.configure({
     // Auth configuration for Gen 2
     Auth: {
-      region: "eu-west-2", // Move region here
       Cognito: {
         userPoolClientId: "5gcd3psg8eku3h2u3ro2oto9n2",
         userPoolId: "eu-west-2_Lnpv8PpZ9",
@@ -28,7 +27,7 @@ export function configureAmplify() {
           "https://mpnk7jya5fbddlafko7royvsya.appsync-api.eu-west-2.amazonaws.com/graphql",
         region: "eu-west-2",
         apiKey: "da2-wuqj3qyirjeblgmowt42fpbunq",
-        defaultAuthMode: "userPool",
+        defaultAuthMode: "AMAZON_COGNITO_USER_POOLS",
       },
     },
     // Storage configuration (if needed)
@@ -38,17 +37,7 @@ export function configureAmplify() {
         region: "eu-west-2",
       },
     },
-    // AI configuration for Bedrock
-    ai: {
-      region: "eu-west-2",
-      conversation: {
-        chat: {
-          model: "anthropic.claude-3-haiku-20240307-v1:0",
-          provider: "bedrock",
-          region: "eu-west-2",
-        },
-      },
-    },
+    // Remove the AI configuration
   } as any);
 
   console.log("✅ Amplify Gen 2 configured successfully");

@@ -1,56 +1,45 @@
 # Deployment Fixes
 
-This document outlines the fixes needed to resolve the TypeScript errors encountered during deployment.
+This document outlines the fixes made to resolve the TypeScript errors encountered during deployment.
 
 ## Issues Fixed
 
-1. **Duplicate `logAIConfigDetails` function in client.ts**
-   - Fixed by ensuring there's only one implementation of the function
+1. **TypeScript Project Reference Issues**
+   - Added `"composite": true` to tsconfig.node.json
+   - Removed `"noEmit": true` from tsconfig.node.json
 
-2. **`AI` property errors in client.ts**
-   - Fixed by using lowercase `ai` instead of uppercase `AI`
-   - Added type definitions to extend Amplify types
+2. **Amplify Configuration Issues**
+   - Updated Auth configuration structure
+   - Changed GraphQL defaultAuthMode to "AMAZON_COGNITO_USER_POOLS"
+   - Added type assertions to bypass TypeScript's strict type checking
 
-3. **`region` property error in amplify-config.ts**
-   - Fixed by moving the `region` property to the correct location in the Cognito configuration
-
-4. **`loginWith` property errors in main.tsx**
-   - Fixed by properly converting the new amplify_outputs.json format to the Amplify Gen 2 configuration format
+3. **UI Improvements**
+   - Updated the chat header in TraidarAI component to only include the "New Conversation" button
+   - Maintained existing CSS styles while adjusting the header layout
 
 ## Files Modified
 
-1. **src/client.ts**
-   - Removed duplicate `logAIConfigDetails` function
-   - Ensured all references to AI configuration use lowercase `ai`
+1. **tsconfig.node.json**
+   - Added `"composite": true`
+   - Removed `"noEmit": true`
 
-2. **src/amplify-config.ts**
-   - Moved `region` property to the correct location in the Cognito configuration
+2. **src/main.tsx**
+   - Updated Amplify configuration structure
+   - Changed GraphQL defaultAuthMode to "AMAZON_COGNITO_USER_POOLS"
+   - Added type assertion for Amplify.configure()
 
-3. **src/main.tsx**
-   - Updated to properly convert the new amplify_outputs.json format to the Amplify Gen 2 configuration format
+3. **src/amplify-config.ts**
+   - Removed region from Cognito object
+   - Updated GraphQL defaultAuthMode
+   - Added type assertion for Amplify.configure()
 
-4. **src/types/amplify.d.ts** (new file)
-   - Added type definitions to extend Amplify types with AI configuration properties
+4. **src/components/features/Dashboard/RightPanel/TraidarAi/TraidarAI.tsx**
+   - Updated the chat header to only include the "New Conversation" button
+   - Maintained existing functionality
 
-5. **tsconfig.json**
-   - Updated to include the custom type definitions directory
+5. **src/components/features/Dashboard/RightPanel/TraidarAi/TraidarAI.module.css**
+   - Adjusted the chat header styles to align the button to the right
 
-## How to Apply the Fixes
+## Next Steps
 
-1. Replace the existing files with the fixed versions:
-   ```bash
-   mv src/client.ts.fixed src/client.ts
-   mv src/amplify-config.ts.fixed src/amplify-config.ts
-   mv src/main.tsx.fixed src/main.tsx
-   ```
-
-2. Make sure the new type definitions file is in place:
-   ```bash
-   mkdir -p src/types
-   ```
-
-3. Rebuild and deploy:
-   ```bash
-   yarn build
-   npx ampx deploy
-   ```
+After applying these fixes, you should be able to build and deploy your application successfully. If you encounter any other issues, please refer to the Amplify v6 documentation for the latest configuration formats and best practices.

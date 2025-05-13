@@ -8,6 +8,43 @@
   overflow: hidden;
 }
 
+/* Chat Header */
+.chatHeader {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+}
+
+/* Error Message */
+.errorMessage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.errorMessage h3 {
+  margin-bottom: 1rem;
+}
+
+/* Loading and Info Messages */
+.loadingMessage,
+.infoMessage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* Conversation Container */
 :global(.amplify-ai-conversation) {
   display: flex !important;

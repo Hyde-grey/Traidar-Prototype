@@ -1,27 +1,41 @@
 import TraidarLogo from "../../../../../assets/IMG/favicon/favicon-32x32.png";
 import { Avatar, Button } from "@aws-amplify/ui-react";
-import { AIConversation, createAIHooks, SendMessage } from "@aws-amplify/ui-react-ai";
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "../../../../../../amplify/data/resource";
+import { AIConversation } from "@aws-amplify/ui-react-ai";
 import styles from "./TraidarAI.module.css";
 import { useEffect, useState } from "react";
 import { useUser } from "../../../../../context/UserContext";
-import { clearConversation, logAIConfigDetails } from "../../../../../client";
+import {
+  clearConversation,
+  logAIConfigDetails,
+  useAIConversation,
+} from "../../../../../client";
+import { Amplify } from "aws-amplify";
 
-const client = generateClient<Schema>();
-const { useAIConversation } = createAIHooks(client);
+// Diagnostic function
+function logObject(obj: any, label: string) {
+  try {
+    console.log(`🔍 ${label}:`, JSON.stringify(obj, null, 2));
+  } catch (err) {
+    console.log(`🔍 ${label} (circular):`, obj);
+  }
+}
 
 // Define error types for better error handling
 type AIError = {
-  type: 'auth' | 'network' | 'tool' | 'unknown';
+  type: "auth" | "network" | "tool" | "unknown";
   message: string;
   details?: unknown;
 };
 
+type SendMessage = (input: any) => Promise<any>;
+
 function TraidarAI() {
   const [error, setError] = useState<AIError | null>(null);
   const { userName, userPicture, isAuthenticated } = useUser();
-  const [{ data: { messages }, isLoading: isConversationLoading }, handleSendMessage] = useAIConversation("chat");
+  const [
+    { data: { messages = [] } = {}, isLoading: isConversationLoading },
+    handleSendMessage,
+  ] = useAIConversation("chat");
   const [isResetting, setIsResetting] = useState(false);
 
   // Clear conversation when user signs out
@@ -30,6 +44,22 @@ function TraidarAI() {
       clearConversation();
     }
   }, [isAuthenticated]);
+
+  // Add diagnostic logging
+  useEffect(() => {
+    console.log("🔄 TraidarAI component mounted");
+    console.log("🔐 Authentication status:", isAuthenticated);
+    console.log("👤 User:", userName);
+    console.log("🤖 AI conversation hook:", {
+      isLoading: isConversationLoading,
+      hasMessages: messages?.length > 0,
+      handleSendMessage: !!handleSendMessage,
+    });
+
+    // Log Amplify configuration
+    const config = Amplify.getConfig() as any;
+    logObject(config.AI, "AI Configuration");
+  }, [isAuthenticated, isConversationLoading, messages, userName]);
 
   const handleImageError = () => {
     // Avatar will fall back to initials
@@ -47,67 +77,37 @@ function TraidarAI() {
     } catch (err) {
       console.error("Failed to reset conversation:", err);
       setError({
-        type: 'unknown',
-        message: 'Failed to start a new conversation. Please try again.',
-        details: err
+        type: "unknown",
+        message: "Failed to start a new conversation. Please try again.",
+        details: err,
       });
       setIsResetting(false);
     }
   };
 
-  const wrappedHandleSendMessage: SendMessage = async (input) => {
+  // Handle sending messages with tool configuration
+  const wrappedHandleSendMessage = async (input: any) => {
     if (!isAuthenticated) {
       setError({
-        type: 'auth',
-        message: "Please sign in to use the chat"
+        type: "auth",
+        message: "Please sign in to use the chat",
       });
       return;
     }
 
     try {
-      // Clear any previous errors
       setError(null);
-      
-      const formattedInput = {
-        content: Array.isArray(input.content) ? input.content : [input.content],
-        aiContext: input.aiContext,
-        toolConfiguration: input.toolConfiguration
-      };
-      
-      return await handleSendMessage(formattedInput);
+
+      // Just pass the input directly to avoid type issues
+      console.log("Sending message:", input);
+      return await handleSendMessage(input);
     } catch (error) {
-      console.error("AI conversation error:", error);
-      
-      // Determine error type for better user feedback
-      let aiError: AIError = {
-        type: 'unknown',
-        message: 'An unexpected error occurred. Please try again.',
-        details: error
-      };
-      
-      // Check for specific error types
-      const errorString = String(error);
-      if (errorString.includes('authentication') || errorString.includes('auth')) {
-        aiError = {
-          type: 'auth',
-          message: 'Authentication error. Please try signing out and back in.',
-          details: error
-        };
-      } else if (errorString.includes('network') || errorString.includes('connection')) {
-        aiError = {
-          type: 'network',
-          message: 'Network error. Please check your connection and try again.',
-          details: error
-        };
-      } else if (errorString.includes('tool') || errorString.includes('getBinanceData')) {
-        aiError = {
-          type: 'tool',
-          message: 'Error fetching market data. Please try again later.',
-          details: error
-        };
-      }
-      
-      setError(aiError);
+      console.error("❌ AI conversation error:", error);
+      setError({
+        type: "unknown",
+        message: "An unexpected error occurred. Please try again.",
+        details: error,
+      });
       throw error;
     }
   };
@@ -148,16 +148,16 @@ function TraidarAI() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        <Button 
-          size="small" 
-          variation="link" 
+        <Button
+          size="small"
+          variation="link"
           onClick={handleNewConversation}
           isLoading={isResetting}
         >
           New Conversation
         </Button>
       </div>
-      
+
       <AIConversation
         welcomeMessage="Hi, I'm Pip, your personal trading assistant. How can I help you today?"
         messages={messages}
@@ -166,8 +166,8 @@ function TraidarAI() {
         avatars={{
           user: {
             avatar: (
-              <Avatar 
-                size="small" 
+              <Avatar
+                size="small"
                 src={userPicture || undefined}
                 onError={handleImageError}
               >
@@ -178,8 +178,8 @@ function TraidarAI() {
           },
           ai: {
             avatar: <Avatar size="small" src={TraidarLogo} />,
-            username: "Pip"
-          }
+            username: "Pip",
+          },
         }}
       />
     </div>
