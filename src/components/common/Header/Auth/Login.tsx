@@ -72,7 +72,7 @@ export default function Login() {
       {!isLoading && !isAuthenticated && show && (
         <div className={styles.overlay} onClick={() => setShow(false)}>
           <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-            <Authenticator hideSignUp={false} />
+            <Authenticator hideSignUp={false} signUpAttributes={["nickname"]} />
           </div>
         </div>
       )}

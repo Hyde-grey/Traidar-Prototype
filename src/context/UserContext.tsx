@@ -11,6 +11,7 @@ import { useAuthenticator } from "@aws-amplify/ui-react";
 interface UserContextType {
   userName: string;
   userPicture: string | null;
+  userEmail: string | null;
   isAuthenticated: boolean;
   clearUserData: () => void;
 }
@@ -18,12 +19,14 @@ interface UserContextType {
 const UserContext = createContext<UserContextType>({
   userName: "User",
   userPicture: null,
+  userEmail: null,
   isAuthenticated: false,
   clearUserData: () => {},
 });
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [userName, setUserName] = useState<string>("User");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userPicture, setUserPicture] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +37,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
   const clearUserData = () => {
     setUserName("User");
+    setUserEmail(null);
     setUserPicture(null);
     setIsAuthenticated(false);
   };
@@ -44,12 +48,22 @@ export function UserProvider({ children }: { children: ReactNode }) {
       try {
         await getCurrentUser();
         const attributes = await fetchUserAttributes();
-        if (attributes.email) {
+
+        // Prefer nickname over email for display name
+        if (attributes.nickname) {
+          setUserName(attributes.nickname);
+        } else if (attributes.email) {
           setUserName(attributes.email);
         }
+
+        if (attributes.email) {
+          setUserEmail(attributes.email);
+        }
+
         if (attributes.picture) {
           setUserPicture(attributes.picture);
         }
+
         setIsAuthenticated(true);
       } catch (error) {
         clearUserData();
@@ -66,12 +80,22 @@ export function UserProvider({ children }: { children: ReactNode }) {
       async function checkAuth() {
         try {
           const attributes = await fetchUserAttributes();
-          if (attributes.email) {
+
+          // Prefer nickname over email for display name
+          if (attributes.nickname) {
+            setUserName(attributes.nickname);
+          } else if (attributes.email) {
             setUserName(attributes.email);
           }
+
+          if (attributes.email) {
+            setUserEmail(attributes.email);
+          }
+
           if (attributes.picture) {
             setUserPicture(attributes.picture);
           }
+
           setIsAuthenticated(true);
         } catch (error) {
           clearUserData();
@@ -91,6 +115,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
     <UserContext.Provider
       value={{
         userName,
+        userEmail,
         userPicture,
         isAuthenticated,
         clearUserData,
