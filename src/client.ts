@@ -1,32 +1,7 @@
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
 import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
-import { Amplify } from "aws-amplify";
 import { createAIHooks } from "@aws-amplify/ui-react-ai";
-import config from "../amplify_outputs.json";
-
-// Configure Amplify with a proper type structure that follows Gen 2 format
-// This provides better type safety than using 'any'
-Amplify.configure({
-  Auth: {
-    Cognito: {
-      userPoolId: config?.auth?.user_pool_id || '',
-      userPoolClientId: config?.auth?.user_pool_client_id || '',
-      identityPoolId: config?.auth?.identity_pool_id || '',
-      loginWith: {
-        email: true
-      }
-    }
-  },
-  API: {
-    GraphQL: {
-      endpoint: config?.data?.url || '',
-      region: config?.data?.aws_region || 'eu-west-2',
-      apiKey: config?.data?.api_key || '',
-      defaultAuthMode: 'userPool'
-    }
-  }
-} as const);
 
 /**
  * Amplify Data client for CRUD and AI routes

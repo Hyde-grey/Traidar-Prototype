@@ -11,12 +11,35 @@ frontend:
       commands:
         - nvm use 20
         - yarn
-        # Create valid TypeScript-compatible JSON file structure
-        - echo '{"version":"1","auth":{"user_pool_id":"","aws_region":"eu-west-2"},"data":{"url":"","aws_region":"eu-west-2"},"ai":{"aws_region":"eu-west-2"}}' > ./amplify_outputs.json
     build:
       commands:
-        # Generate outputs file with proper JSON formatting for TypeScript
-        - amplify env get --json --name $AWS_BRANCH > ./amplify_outputs.json || echo "Unable to get environment info - using default outputs"
+        # Generate only the configuration needed for the project
+        - |
+          cat << EOF > ./amplify_outputs.json
+          {
+            "version": "1",
+            "auth": {
+              "user_pool_id": "eu-west-2_Lnpv8PpZ9",
+              "aws_region": "eu-west-2",
+              "user_pool_client_id": "5gcd3psg8eku3h2u3ro2oto9n2",
+              "identity_pool_id": "eu-west-2:bb9541a9-eb31-407b-9313-6d5f119d97c6"
+            },
+            "data": {
+              "url": "https://mpnk7jya5fbddlafko7royvsya.appsync-api.eu-west-2.amazonaws.com/graphql",
+              "aws_region": "eu-west-2",
+              "api_key": "da2-wuqj3qyirjeblgmowt42fpbunq",
+              "default_authorization_type": "AMAZON_COGNITO_USER_POOLS"
+            },
+            "ai": {
+              "conversation": {
+                "chat": {
+                  "model": "anthropic.claude-3-haiku-20240307-v1:0",
+                  "provider": "bedrock"
+                }
+              }
+            }
+          }
+          EOF
         - yarn build
   artifacts:
     baseDirectory: dist
