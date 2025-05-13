@@ -13,7 +13,7 @@ frontend:
         - yarn
     build:
       commands:
-        # Generate only the configuration needed for the project
+        # Generate the correct AI configuration structure
         - |
           cat << EOF > ./amplify_outputs.json
           {
@@ -31,10 +31,12 @@ frontend:
               "default_authorization_type": "AMAZON_COGNITO_USER_POOLS"
             },
             "ai": {
+              "aws_region": "eu-west-2",
               "conversation": {
                 "chat": {
                   "model": "anthropic.claude-3-haiku-20240307-v1:0",
-                  "provider": "bedrock"
+                  "provider": "bedrock",
+                  "region": "eu-west-2"
                 }
               }
             }

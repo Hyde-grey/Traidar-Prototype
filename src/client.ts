@@ -57,3 +57,35 @@ export async function refreshCompleteAuth() {
     return false;
   }
 }
+
+// Diagnostic function to log AI configuration details
+export async function logAIConfig() {
+  try {
+    // Get auth session to check authentication status
+    const authSession = await fetchAuthSession();
+    const isSignedIn = authSession?.tokens?.accessToken ? true : false;
+    
+    // Log diagnostic information
+    console.info('🔍 AI Diagnostics', {
+      isSignedIn,
+      sessionValid: isSignedIn,
+      clientStatus: client !== undefined ? 'Initialized' : 'Not initialized',
+      hooksAvailable: typeof useAIConversation === 'function' ? 'Available' : 'Not available',
+      localStorage: Object.keys(localStorage || {}).filter(k => k.includes('amplify')),
+      sessionStorage: Object.keys(sessionStorage || {}).filter(k => k.includes('amplify')),
+    });
+    
+    // Try to use the client directly to test if it works
+    try {
+      const convos = await client.conversations.chat.list();
+      console.info('🗣️ Conversations retrieved successfully', { count: convos?.data?.length || 0 });
+      return true;
+    } catch (error) {
+      console.error('❌ Error retrieving conversations', error);
+      return false;
+    }
+  } catch (err) {
+    console.error('❌ AI config diagnostic error:', err);
+    return false;
+  }
+}
