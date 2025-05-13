@@ -19,17 +19,24 @@ const TradingViewChart = () => {
     script.type = "text/javascript";
     script.async = true;
     script.innerHTML = `
-      {
-        "autosize": true,
-        "symbol": "${selectedAsset}",
-        "interval": "D",
-        "timezone": "Etc/UTC",
-        "theme": "dark",
-        "style": "1",
-        "locale": "en",
-        "allow_symbol_change": true,
-        "support_host": "https://www.tradingview.com"
-      }`;
+  {
+  "autosize": true,
+  "symbol": "${selectedAsset}",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "dark",
+  "style": "1",
+  "locale": "en",
+  "withdateranges": true,
+  "hide_side_toolbar": false,
+  "allow_symbol_change": true,
+  "details": true,
+  "hotlist": true,
+  "show_popup_button": true,
+  "popup_width": "1000",
+  "popup_height": "650",
+  "support_host": "https://www.tradingview.com"
+  }`;
 
     container.current?.appendChild(script);
 
