@@ -5,8 +5,7 @@ import { Amplify } from "aws-amplify";
 import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import config from "../amplify_outputs.json";
 
-// Configure Amplify with the configuration from amplify_outputs.json
-// This file should be generated properly by the CI/CD pipeline in Amplify
+// Configure Amplify with the sandbox config
 Amplify.configure(config);
 
 /**

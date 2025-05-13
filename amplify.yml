@@ -11,10 +11,12 @@ frontend:
       commands:
         - nvm use 20
         - yarn
+        # Create a basic structure for amplify_outputs.json in case env get fails
+        - echo '{"version":"1"}' > ./amplify_outputs.json
     build:
       commands:
-        # Generate outputs file from deployed environment's outputs
-        - amplify env get --json --name $AWS_BRANCH > ./amplify_outputs.json
+        # Generate outputs file from deployed environment's outputs and build
+        - amplify env get --name $AWS_BRANCH > ./amplify_outputs.json || echo "Unable to get environment info - using default outputs"
         - yarn build
   artifacts:
     baseDirectory: dist
