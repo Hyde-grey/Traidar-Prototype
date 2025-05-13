@@ -5,8 +5,30 @@ import { Amplify } from "aws-amplify";
 import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import config from "../amplify_outputs.json";
 
-// Configure Amplify with the sandbox config
-Amplify.configure(config as any);
+// Explicitly log the config being loaded to help diagnose issues
+console.log("Amplify configuration loaded:", 
+  JSON.stringify({
+    hasAuth: !!config?.auth,
+    authRegion: config?.auth?.aws_region,
+    hasUserPool: !!config?.auth?.user_pool_id
+  })
+);
+
+// Configure Amplify with the sandbox config, ensuring Auth is properly set up
+Amplify.configure({
+  ...config as any,
+  // Explicitly ensure Auth configuration is correct
+  Auth: {
+    Cognito: {
+      userPoolId: config?.auth?.user_pool_id || "eu-west-2_Lnpv8PpZ9",
+      userPoolClientId: config?.auth?.user_pool_client_id || "5gcd3psg8eku3h2u3ro2oto9n2",
+      identityPoolId: config?.auth?.identity_pool_id || "eu-west-2:bb9541a9-eb31-407b-9313-6d5f119d97c6",
+      loginWith: {
+        email: true,
+      },
+    }
+  }
+});
 
 /**
  * Amplify Data client for CRUD and AI routes
