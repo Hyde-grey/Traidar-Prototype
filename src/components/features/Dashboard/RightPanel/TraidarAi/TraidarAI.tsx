@@ -27,8 +27,6 @@ type AIError = {
   details?: unknown;
 };
 
-type SendMessage = (input: any) => Promise<any>;
-
 function TraidarAI() {
   const [error, setError] = useState<AIError | null>(null);
   const { userName, userPicture, isAuthenticated } = useUser();
@@ -58,7 +56,7 @@ function TraidarAI() {
 
     // Log Amplify configuration
     const config = Amplify.getConfig() as any;
-    logObject(config.AI, "AI Configuration");
+    logObject(config.ai, "AI Configuration");
   }, [isAuthenticated, isConversationLoading, messages, userName]);
 
   const handleImageError = () => {

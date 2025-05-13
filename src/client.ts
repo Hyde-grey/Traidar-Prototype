@@ -3,7 +3,6 @@ import type { Schema } from "../amplify/data/resource";
 import { getCurrentUser, fetchAuthSession } from "aws-amplify/auth";
 import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import { Amplify } from "aws-amplify";
-import config from "../amplify_outputs.json";
 
 // Note: Amplify is already configured in main.tsx
 // We're not reconfiguring it here to avoid overriding previous configurations
@@ -78,48 +77,21 @@ export async function refreshCompleteAuth() {
 }
 
 /**
- * Log AI configuration details for debugging
- * @returns Promise<boolean> indicating success
- */
-export async function logAIConfig() {
-  try {
-    // Get auth session to check authentication status
-    const authSession = await fetchAuthSession();
-    const isSignedIn = authSession?.tokens?.accessToken ? true : false;
-    
-    // Log diagnostic information
-    console.info('🔍 AI Diagnostics', {
-      isSignedIn,
-      sessionValid: isSignedIn,
-      clientStatus: client !== undefined ? 'Initialized' : 'Not initialized',
-      hooksAvailable: typeof useAIConversation === 'function' ? 'Available' : 'Not available',
-      localStorage: Object.keys(localStorage || {}).filter(k => k.includes('amplify')),
-      sessionStorage: Object.keys(sessionStorage || {}).filter(k => k.includes('amplify')),
-    });
-    
-    // Try to use the client directly to test if it works
-    try {
-      const convos = await client.conversations.chat.list();
-      console.info('🗣️ Conversations retrieved successfully', { count: convos?.data?.length || 0 });
-      return true;
-    } catch (error) {
-      console.error('❌ Error retrieving conversations', error);
-      return false;
-    }
-  } catch (err) {
-    console.error('❌ AI config diagnostic error:', err);
-    return false;
-  }
-}
-
-/**
  * Log detailed AI configuration for debugging
  * @returns Promise<boolean> indicating success
  */
 export async function logAIConfigDetails() {
   try {
-    const config = await fetchAuthSession();
-    console.info('🔍 Authentication status:', !!config.tokens);
+    // Log full Amplify configuration for debugging
+    const fullConfig = Amplify.getConfig() as any;
+    console.info('🔍 AI Configuration Details:', {
+      aiRegion: fullConfig.ai?.region || 'not configured',
+      conversationConfig: fullConfig.ai?.conversation || 'not configured',
+      authStatus: 'Checking...'
+    });
+    
+    const authSession = await fetchAuthSession();
+    console.info('🔍 Authentication status:', !!authSession.tokens);
     return true;
   } catch (err) {
     console.error('❌ AI Config Diagnostic Error:', err);
