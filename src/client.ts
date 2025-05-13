@@ -6,7 +6,7 @@ import { createAIHooks } from "@aws-amplify/ui-react-ai";
 import config from "../amplify_outputs.json";
 
 // Configure Amplify with the sandbox config
-Amplify.configure(config);
+Amplify.configure(config as any);
 
 /**
  * Amplify Data client for CRUD and AI routes

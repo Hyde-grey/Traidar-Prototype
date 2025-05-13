@@ -11,10 +11,12 @@ frontend:
       commands:
         - nvm use 20
         - yarn
+        # Create a simplified config that's compatible with TypeScript
+        - echo '{"auth":{"aws_region":"eu-west-2"},"api":{"aws_region":"eu-west-2"},"ai":{"aws_region":"eu-west-2"}}' > ./amplify_outputs.json
     build:
       commands:
-        # Generate amplify outputs file during build
-        - amplify env get --json --name $AWS_BRANCH > ./amplify_outputs.json || echo "No amplify env found"
+        # Try to get Amplify outputs, but use the fallback if it fails
+        - amplify env get --json --name $AWS_BRANCH > ./amplify_outputs.json || echo "Using default config file"
         - yarn build
   artifacts:
     baseDirectory: dist

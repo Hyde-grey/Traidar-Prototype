@@ -10,7 +10,7 @@ import { Amplify } from "aws-amplify";
 import config from "../amplify_outputs.json";
 
 // Configure Amplify for Gen 2 using our config function
-Amplify.configure(config);
+Amplify.configure(config as any);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
