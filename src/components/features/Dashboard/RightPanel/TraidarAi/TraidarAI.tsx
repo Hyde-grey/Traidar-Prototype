@@ -11,15 +11,6 @@ import {
 } from "../../../../../client";
 import { Amplify } from "aws-amplify";
 
-// Diagnostic function
-function logObject(obj: any, label: string) {
-  try {
-    console.log(`🔍 ${label}:`, JSON.stringify(obj, null, 2));
-  } catch (err) {
-    console.log(`🔍 ${label} (circular):`, obj);
-  }
-}
-
 // Define error types for better error handling
 type AIError = {
   type: "auth" | "network" | "tool" | "unknown";
@@ -42,22 +33,6 @@ function TraidarAI() {
       clearConversation();
     }
   }, [isAuthenticated]);
-
-  // Add diagnostic logging
-  useEffect(() => {
-    console.log("🔄 TraidarAI component mounted");
-    console.log("🔐 Authentication status:", isAuthenticated);
-    console.log("👤 User:", userName);
-    console.log("🤖 AI conversation hook:", {
-      isLoading: isConversationLoading,
-      hasMessages: messages?.length > 0,
-      handleSendMessage: !!handleSendMessage,
-    });
-
-    // Log Amplify configuration
-    const config = Amplify.getConfig() as any;
-    logObject(config.ai, "AI Configuration");
-  }, [isAuthenticated, isConversationLoading, messages, userName]);
 
   const handleImageError = () => {
     // Avatar will fall back to initials
@@ -95,12 +70,9 @@ function TraidarAI() {
 
     try {
       setError(null);
-
-      // Just pass the input directly to avoid type issues
-      console.log("Sending message:", input);
       return await handleSendMessage(input);
     } catch (error) {
-      console.error("❌ AI conversation error:", error);
+      console.error("AI conversation error:", error);
       setError({
         type: "unknown",
         message: "An unexpected error occurred. Please try again.",

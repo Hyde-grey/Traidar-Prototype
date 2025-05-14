@@ -46,33 +46,6 @@ frontend:
             }
           }
           EOF
-        # Add diagnostic logging to help troubleshoot AI issues
-        - |
-          cat << EOF >> ./src/client.ts
-
-          // Add diagnostic logging for AI configuration
-          export async function logAIConfigDetails() {
-            try {
-              console.info('🔍 AI Configuration Details:', {
-                aiRegion: Amplify.getConfig().AI?.region || 'not configured',
-                conversationConfig: Amplify.getConfig().AI?.conversation || 'not configured',
-                authStatus: 'Checking...'
-              });
-              
-              try {
-                const authSession = await fetchAuthSession();
-                console.info('🔐 Auth Session Valid:', !!authSession.tokens?.accessToken);
-              } catch (authErr) {
-                console.error('❌ Auth Session Error:', authErr);
-              }
-              
-              return true;
-            } catch (err) {
-              console.error('❌ AI Config Diagnostic Error:', err);
-              return false;
-            }
-          }
-          EOF
         - yarn build
   artifacts:
     baseDirectory: dist
