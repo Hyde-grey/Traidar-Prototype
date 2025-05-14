@@ -1,17 +1,32 @@
-import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
+import { type ClientSchema, a, defineData, defineFunction } from "@aws-amplify/backend";
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any unauthenticated user can "create", "read", "update", 
-and "delete" any "Todo" records.
-=========================================================================*/
+// Define the function that will handle Binance API requests
+export const getBinanceDataFunction = defineFunction({
+  entry: "./getBinanceData.ts",
+});
+
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
+  // Define a custom query for Binance data
+  getBinanceData: a.query()
+    .arguments({ 
+      symbol: a.string().required() 
     })
-    .authorization((allow) => [allow.guest()]),
+    .returns(a.string())
+    .handler(a.handler.function(getBinanceDataFunction))
+    .authorization((allow) => allow.authenticated()),
+
+  // Define the conversation route exactly as per documentation
+  chat: a.conversation({
+    // Use exact model ID from Bedrock console
+    aiModel: a.ai.model("Claude 3 Haiku"),
+    systemPrompt: `You are Pip, the intelligent trading assistant behind Traidar — a next-generation AI fintech platform built to help retail traders make smarter decisions with clarity and confidence. Your role is to support users by simplifying complex market data, generating trade plans, answering portfolio questions, and acting as a calm, focused co-pilot in a noisy trading world. Keep it concise and to the point.`,
+    tools: [{
+      name: "getBinanceData",
+      description: "Get real-time market data from Binance API for a specific trading pair (e.g., BTCUSDT, ETHUSDT)",
+      query: a.ref("getBinanceData")
+    }]
+  })
+  .authorization((allow) => allow.owner()),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -19,35 +34,9 @@ export type Schema = ClientSchema<typeof schema>;
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: 'identityPool',
-  },
+    defaultAuthorizationMode: "userPool",
+    apiKeyAuthorizationMode: {
+      expiresInDays: 30,
+    },
+  }
 });
-
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
