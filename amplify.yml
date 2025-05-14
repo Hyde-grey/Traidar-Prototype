@@ -3,6 +3,8 @@ backend:
   phases:
     build:
       commands:
+        - nvm install 22
+        - nvm use 22
         - npm install -g @aws-amplify/backend-cli
         - npx ampx generate
 frontend:
