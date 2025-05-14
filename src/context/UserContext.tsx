@@ -65,7 +65,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         }
 
         setIsAuthenticated(true);
-      } catch (error) {
+      } catch (_) {
         clearUserData();
       } finally {
         setIsLoading(false);
@@ -97,7 +97,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
           }
 
           setIsAuthenticated(true);
-        } catch (error) {
+        } catch (_) {
           clearUserData();
         }
       }

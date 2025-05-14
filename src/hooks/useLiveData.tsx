@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 export const useDebounce = <T,>(value: T, delay: number): T => {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -61,7 +61,7 @@ export const useLiveData = (): UseLiveDataResponse => {
   const MAX_RETRIES = 5;
   const RETRY_DELAY = 2000; // 2 seconds
 
-  const connect = () => {
+  const connect = useCallback(() => {
     try {
       if (socketRef.current?.readyState === WebSocket.OPEN) {
         return;
@@ -129,7 +129,7 @@ export const useLiveData = (): UseLiveDataResponse => {
         error instanceof Error ? error : new Error("Failed to create WebSocket")
       );
     }
-  };
+  }, [retryCount, MAX_RETRIES, RETRY_DELAY]);
 
   useEffect(() => {
     connect();
@@ -145,7 +145,7 @@ export const useLiveData = (): UseLiveDataResponse => {
         socketRef.current.close();
       }
     };
-  }, []);
+  }, [connect]);
 
   return { liveData, isConnected, error };
 };
