@@ -9,7 +9,6 @@ import {
   logAIConfigDetails,
   useAIConversation,
 } from "../../../../../client";
-import { Amplify } from "aws-amplify";
 
 // Define error types for better error handling
 type AIError = {
