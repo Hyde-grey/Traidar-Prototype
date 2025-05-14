@@ -12,9 +12,9 @@ export function configureAmplify() {
     // Auth configuration for Gen 2
     Auth: {
       Cognito: {
-        userPoolClientId: "5gcd3psg8eku3h2u3ro2oto9n2",
-        userPoolId: "eu-west-2_Lnpv8PpZ9",
-        identityPoolId: "eu-west-2:bb9541a9-eb31-407b-9313-6d5f119d97c6",
+        userPoolClientId: "a4abpiffsqbhb960qhjmschln",
+        userPoolId: "eu-west-2_MUKuDYlJs",
+        identityPoolId: "eu-west-2:17e5bfb7-50e9-4e47-8499-55639e47829b",
         loginWith: {
           email: true,
         },
