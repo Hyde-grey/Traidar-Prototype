@@ -1,104 +1,37 @@
 import TraidarLogo from "../../../../../assets/IMG/favicon/favicon-32x32.png";
-import { Avatar, Button } from "@aws-amplify/ui-react";
-import { AIConversation } from "@aws-amplify/ui-react-ai";
+import { Avatar } from "@aws-amplify/ui-react";
+import { Amplify } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
+import { AIConversation, createAIHooks } from "@aws-amplify/ui-react-ai";
+import outputs from "../../../../../../amplify_outputs.json";
+import type { Schema } from "../../../../../../amplify/data/resource";
 import styles from "./TraidarAI.module.css";
-import { useEffect, useState } from "react";
 import { useUser } from "../../../../../context/UserContext";
-import {
-  clearConversation,
-  logAIConfigDetails,
-  useAIConversation,
-} from "../../../../../client";
 
-// Define error types for better error handling
-type AIError = {
-  type: "auth" | "network" | "tool" | "unknown";
-  message: string;
-  details?: unknown;
-};
+Amplify.configure(outputs);
+const client = generateClient<Schema>({ authMode: "userPool" });
+const { useAIConversation } = createAIHooks(client);
 
 function TraidarAI() {
-  const [error, setError] = useState<AIError | null>(null);
   const { userName, userPicture, isAuthenticated } = useUser();
+
   const [
-    { data: { messages = [] } = {}, isLoading: isConversationLoading },
+    {
+      data: { messages },
+      isLoading,
+    },
     handleSendMessage,
   ] = useAIConversation("chat");
-  const [isResetting, setIsResetting] = useState(false);
-
-  // Clear conversation when user signs out
-  useEffect(() => {
-    if (!isAuthenticated) {
-      clearConversation();
-    }
-  }, [isAuthenticated]);
 
   const handleImageError = () => {
-    // Avatar will fall back to initials
+    // Handle avatar image loading error
   };
 
-  // Handle starting a new conversation
-  const handleNewConversation = async () => {
-    try {
-      setIsResetting(true);
-      await clearConversation();
-      // Force a refresh of the AI configuration
-      await logAIConfigDetails();
-      setError(null);
-      setIsResetting(false);
-    } catch (err) {
-      console.error("Failed to reset conversation:", err);
-      setError({
-        type: "unknown",
-        message: "Failed to start a new conversation. Please try again.",
-        details: err,
-      });
-      setIsResetting(false);
-    }
-  };
-
-  // Handle sending messages with tool configuration
-  const wrappedHandleSendMessage = async (input: any) => {
-    if (!isAuthenticated) {
-      setError({
-        type: "auth",
-        message: "Please sign in to use the chat",
-      });
-      return;
-    }
-
-    try {
-      setError(null);
-      return await handleSendMessage(input);
-    } catch (error) {
-      console.error("AI conversation error:", error);
-      setError({
-        type: "unknown",
-        message: "An unexpected error occurred. Please try again.",
-        details: error,
-      });
-      throw error;
-    }
-  };
-
-  if (error) {
-    return (
-      <div className={styles.chatContainer}>
-        <div className={styles.errorMessage}>
-          <h3>Error: {error.message}</h3>
-          <Button onClick={handleNewConversation} isLoading={isResetting}>
-            Start New Conversation
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
-  if (isConversationLoading || isResetting) {
+  if (isLoading) {
     return (
       <div className={styles.chatContainer}>
         <div className={styles.loadingMessage}>
-          {isResetting ? "Starting new conversation..." : "Loading chat..."}
+          Loading chat...
         </div>
       </div>
     );
@@ -117,21 +50,13 @@ function TraidarAI() {
   return (
     <div className={styles.chatContainer}>
       <div className={styles.chatHeader}>
-        <Button
-          size="small"
-          variation="link"
-          onClick={handleNewConversation}
-          isLoading={isResetting}
-        >
-          New Conversation
-        </Button>
+        {/* Removed manual reset; use built-in conversation hook */}
       </div>
 
       <AIConversation
-        welcomeMessage="Hi, I'm Pip, your personal trading assistant. How can I help you today?"
         messages={messages}
-        isLoading={isConversationLoading}
-        handleSendMessage={wrappedHandleSendMessage}
+        isLoading={isLoading}
+        handleSendMessage={handleSendMessage}
         avatars={{
           user: {
             avatar: (
