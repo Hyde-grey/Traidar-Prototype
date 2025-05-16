@@ -16,7 +16,6 @@
   align-items: center;
   margin-bottom: 40px;
 }
-
 /* Media queries for responsive layout */
 @media (max-width: 1200px) {
   .mainContainer {
