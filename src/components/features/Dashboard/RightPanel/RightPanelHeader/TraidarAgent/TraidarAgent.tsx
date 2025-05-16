@@ -5,8 +5,8 @@ const TraidarAgent = () => {
   return (
     <div className={styles.traidarAgentContainer}>
       <div className={styles.agentName}>
-        <img src={Stars} alt="stars" />
-        <h4 className={styles.white}>Traidar Agent</h4>
+        <img src={Stars} alt="Pip AI Agent icon" />
+        <h4 className={styles.white}>PIP AI Agent</h4>
       </div>
       <p>Please trade responsibly. Not financial advice.</p>
     </div>
