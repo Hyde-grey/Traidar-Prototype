@@ -1,7 +1,7 @@
 import { useRef, useEffect, useContext, useState, useCallback } from "react";
 import * as d3 from "d3";
 import styles from "./AssetChart.module.css";
-import { useFetchData } from "../SearchAssets/useFetchData";
+import { useFetchData } from "../../../../../hooks/useFetchData";
 import { useLiveData } from "../../../../../hooks/useLiveData";
 import { AssetContext, TimeRange } from "../../../../../context/AssetContext";
 import { FadeInMotion } from "../../../../../components/common";
@@ -266,7 +266,9 @@ const AssetChart = () => {
 
       // Clear previous chart and show message
       if (chartRef.current) {
-        d3.select(chartRef.current).selectAll("*").remove();
+        d3.select(chartRef.current)
+          .selectAll("*")
+          .remove();
 
         const { width, height } = chartDimensions;
         const svg = d3
@@ -297,7 +299,9 @@ const AssetChart = () => {
 
     try {
       // Clear previous chart
-      d3.select(chartRef.current).selectAll("*").remove();
+      d3.select(chartRef.current)
+        .selectAll("*")
+        .remove();
 
       const { width, height } = chartDimensions;
 
@@ -342,12 +346,18 @@ const AssetChart = () => {
 
       // Simplify x-axis for mobile
       const xAxis = isMobile
-        ? d3.axisBottom(x).ticks(4).tickSizeOuter(0)
+        ? d3
+            .axisBottom(x)
+            .ticks(4)
+            .tickSizeOuter(0)
         : d3.axisBottom(x).tickSizeOuter(0);
 
       // Simplify y-axis for mobile
       const yAxis = isMobile
-        ? d3.axisLeft(y).ticks(5).tickSizeOuter(0)
+        ? d3
+            .axisLeft(y)
+            .ticks(5)
+            .tickSizeOuter(0)
         : d3.axisLeft(y).tickSizeOuter(0);
 
       // Add X axis
@@ -358,7 +368,10 @@ const AssetChart = () => {
         .attr("class", styles.axis);
 
       // Add Y axis
-      svg.append("g").call(yAxis).attr("class", styles.axis);
+      svg
+        .append("g")
+        .call(yAxis)
+        .attr("class", styles.axis);
 
       // Calculate the width of each bar, adjusted for mobile
       const dataCount = candleData.length;

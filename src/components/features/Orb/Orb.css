@@ -1,0 +1,39 @@
+.orb-container {
+  position: relative;
+  background-color: transparent;
+  z-index: 2;
+  width: 80%;
+  height: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.orb-container canvas {
+  background: transparent !important;
+  display: block;
+}
+
+.orb-loading::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+}
+
+/* Fade in transition for the loaded orb */
+.orb-loaded canvas {
+  transition: opacity 0.3s ease;
+}
+
+/* Placeholder while orb is loading */
+.orb-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  z-index: 1;
+}

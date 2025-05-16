@@ -1,5 +1,5 @@
 // Define shared types here
-export type NavType = "portfolio" | "news" | "analysis";
+export type NavType = "dashboard" | "analysis";
 
 // Example:
 // export interface User {

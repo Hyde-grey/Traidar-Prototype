@@ -1,6 +1,6 @@
 .sign {
-  border: 1px solid #06ac01;
-  background-color: #07ac0117;
+  border: 1px solid #7c5bf9;
+  background-color: #7c5bf917;
   border-radius: 10px;
   width: 105px;
   height: 50px;
@@ -9,6 +9,7 @@
   justify-content: center;
   transition: all 0.5s ease-in-out;
   cursor: pointer;
+  color: #9c60ff;
 }
 
 /* Media queries for responsive layout */
@@ -61,8 +62,8 @@
 }
 
 .modal :global(.amplify-tabs-item[data-state="active"]) {
-  color: #2d9bf0 !important;
-  border-color: #2d9bf0 !important;
+  color: #9c60ff !important;
+  border-color: #9c60ff !important;
 }
 
 .modal :global(.amplify-tabs-item) {
@@ -105,20 +106,20 @@
 }
 
 .modal :global(.amplify-button--primary) {
-  background: linear-gradient(135deg, #2d9bf0, #1a70f2) !important;
+  background: linear-gradient(135deg, #9c60ff, #7c42f4) !important;
   border: none !important;
   width: 100% !important;
   backdrop-filter: blur(4px);
-  box-shadow: 0 4px 12px rgba(45, 155, 240, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(156, 96, 255, 0.3) !important;
 }
 
 .modal :global(.amplify-button--primary:hover) {
-  background: linear-gradient(135deg, #38a5fc, #2179f9) !important;
+  background: linear-gradient(135deg, #a770ff, #8952f5) !important;
   transform: translateY(-1px) !important;
 }
 
 .modal :global(.amplify-button[data-variation="link"]) {
-  color: #2d9bf0 !important;
+  color: #9c60ff !important;
 }
 
 .modal :global(.amplify-authenticator) {
@@ -185,16 +186,30 @@
 
 /* Logout button style */
 .logout {
-  background-color: #ff657f1a !important;
-  border-color: #d32f2f !important;
+  background-color: rgba(156, 96, 255, 0.15) !important;
+  border-color: #7c42f4 !important;
   color: #ffffff !important;
 }
 .logout:hover {
-  background-color: #b71c1c !important;
+  background-color: rgba(156, 96, 255, 0.25) !important;
 }
 
 /* Loading state */
 .loading {
   opacity: 0.7;
   cursor: default;
+}
+
+.modal :global(.amplify-text a),
+.modal :global(.amplify-button[data-variation="link"]),
+.modal :global(a) {
+  color: #9c60ff !important;
+  text-decoration: none;
+}
+
+.modal :global(.amplify-text a:hover),
+.modal :global(.amplify-button[data-variation="link"]:hover),
+.modal :global(a:hover) {
+  color: #a770ff !important;
+  text-decoration: underline;
 }

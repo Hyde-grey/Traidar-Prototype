@@ -8,13 +8,14 @@
 
 .navItem {
   display: flex;
-  flex-direction: column;
+
   align-items: center;
   justify-content: center;
   gap: 1rem;
   cursor: pointer;
   color: #6c757d;
   transition: color 0.3s ease;
+  text-decoration: none;
 }
 
 .activeNavItem {
@@ -37,6 +38,16 @@
   opacity: 1;
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
     contrast(103%); /* #FFFFFF */
+}
+
+.navItem:hover {
+  color: #ffffff;
+}
+
+.navItem:hover .navIcon {
+  opacity: 0.8;
+  filter: invert(80%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%)
+    contrast(103%);
 }
 
 .sign {

@@ -2,12 +2,16 @@ import { SearchAssets } from "../../components/features/SearchAssets";
 import Orb from "../../components/features/Orb/Orb";
 import Stars from "../../assets/SVG/Stars.svg";
 import styles from "./LandingPage.module.css";
+import { FadeInMotion } from "../../components/common";
 
 const LandingPage = () => {
   return (
-    <div className={styles.landingPage}>
+    <FadeInMotion
+      transition={{ duration: 10, ease: "easeOut" }}
+      className={styles.landingPage}
+    >
       <Orb
-        hoverIntensity={0.5}
+        hoverIntensity={1}
         rotateOnHover={true}
         hue={256}
         forceHoverState={false}
@@ -22,7 +26,7 @@ const LandingPage = () => {
           <SearchAssets />
         </div>
       </div>
-    </div>
+    </FadeInMotion>
   );
 };
 

@@ -6,7 +6,7 @@ import SearchBar from "../../common/Search/SearchBar";
 import AssetList from "./AssetList";
 import { Asset } from "./types";
 import { FadeInMotion } from "../../common";
-
+import { useNavigate, useLocation } from "react-router-dom";
 // List of trending assets to show at the top (in this order)
 const trendingSymbols = ["BTC", "ETH", "SOL"];
 
@@ -25,6 +25,8 @@ const SearchAssets = () => {
   const { selectedAsset, setSelectedAsset, setAssetData } = useContext(
     AssetContext
   );
+  const navigate = useNavigate();
+  const currentPath = useLocation().pathname;
 
   const [trendingAssets, setTrendingAssets] = useState<Asset[]>([]);
   const [allAssets, setAllAssets] = useState<Asset[]>([]);
@@ -143,6 +145,10 @@ const SearchAssets = () => {
     setSearchTerm(asset.symbol);
     setIsSearching(false);
     setAssetData(asset);
+
+    if (currentPath === "/landing") {
+      navigate("/dashboard");
+    }
   };
 
   // Handle search term changes from the search bar

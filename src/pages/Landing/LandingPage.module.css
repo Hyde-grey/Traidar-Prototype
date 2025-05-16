@@ -5,7 +5,9 @@
   justify-content: center;
   align-items: center;
 
-  position: relative;
+  position: absolute;
+  top: -5vh;
+  left: 0;
 }
 
 .searchBarContainer {

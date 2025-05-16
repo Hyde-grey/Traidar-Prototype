@@ -1,0 +1,28 @@
+.tradingViewContainer {
+  width: 100%;
+  min-height: 500px;
+  background-color: transparent;
+  border-radius: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 0;
+  height: auto;
+}
+
+.tradingViewWidget {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .tradingViewContainer {
+    height: 350px;
+    min-height: 350px;
+    flex-grow: 1;
+  }
+}
+
+@media (max-width: 576px) {
+  .tradingViewContainer {
+    height: 300px;
+    min-height: 300px;
+  }
+}
