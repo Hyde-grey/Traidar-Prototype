@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import ChartArrow from "../../../../assets/SVG/ChartArrow.svg";
-import { useFetchCryptoData } from "../SearchAssets/useFetchData";
+import {
+  useFetchCryptoData,
+  CryptoMarketData,
+} from "../../../../../hooks/useFetchData";
 import styles from "./AssetList.module.css";
 
 type Asset = {
@@ -36,8 +39,10 @@ const AssetList = () => {
     if (cryptoData.length > 0) {
       // Convert Binance data to our format
       const formattedCryptoData = cryptoData
-        .filter((crypto) => crypto.baseAsset && crypto.iconUrl) // Filter out any items with undefined values
-        .map((crypto) => ({
+        .filter(
+          (crypto: CryptoMarketData) => crypto.baseAsset && crypto.iconUrl
+        ) // Filter out any items with undefined values
+        .map((crypto: CryptoMarketData) => ({
           symbol: crypto.baseAsset as string,
           name: crypto.baseAsset as string,
           exchange: exchangeMap[crypto.baseAsset as string] || "Binance",
