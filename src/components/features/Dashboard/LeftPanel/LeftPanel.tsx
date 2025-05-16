@@ -1,6 +1,5 @@
 import SavedIcon from "../../../../assets/SVG/Saved.svg";
 import Button from "../../../../components/common/Button/Button";
-import SearchAssets from "./SearchAssets/SearchAssets";
 import Loader from "../Loader/Loader";
 import styles from "./LeftPanel.module.css";
 import { useState, useEffect, useContext } from "react";
@@ -11,6 +10,7 @@ import AssetPrice from "./AssetPrice/AssetPrice";
 import { AssetContext } from "../../../../context/AssetContext";
 import { FadeInMotion } from "../../../../components/common";
 import TradingViewChart from "./TradingViewChart/TradaingViewChart";
+import { SearchAssets } from "../../SearchAssets";
 
 /**
  * The main left panel component displaying asset data and charts
