@@ -1,27 +1,15 @@
 /** Right Panel **/
 .rightPanel {
-  flex: 0 0 69%;
+  flex: 0 0 39%;
   border-radius: 2rem;
   background-color: rgba(29, 30, 34, 0.5);
   backdrop-filter: blur(34px);
   -webkit-backdrop-filter: blur(34px);
+  padding: 1rem;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-.rightPanel::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 2rem;
-  padding: 1px;
-  background: linear-gradient(to right, #3a5045, #666666);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
 }
 
 .panelHeader {
@@ -31,6 +19,9 @@
   align-items: center;
   justify-content: end;
   gap: 1rem;
+  background-color: rgba(29, 30, 34, 0.5);
+  backdrop-filter: blur(34px);
+  -webkit-backdrop-filter: blur(34px);
 
   .searchBar {
     width: 80%;
