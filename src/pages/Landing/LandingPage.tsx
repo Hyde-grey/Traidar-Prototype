@@ -7,7 +7,7 @@ import { FadeInMotion } from "../../components/common";
 const LandingPage = () => {
   return (
     <FadeInMotion
-      transition={{ duration: 10, ease: "easeOut" }}
+      transition={{ duration: 5, ease: "easeOut" }}
       className={styles.landingPage}
     >
       <Orb

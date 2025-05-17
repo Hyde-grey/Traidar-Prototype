@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Logo, Nav, Login } from "./components/common";
 import LandingPage from "./pages/Landing/LandingPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { HashRouter, Routes, Route, useLocation } from "react-router-dom";
 
 import { NavType } from "./types";
 import { UserProvider } from "./context/UserContext";
@@ -51,11 +51,11 @@ function AppContent() {
 function App() {
   return (
     <UserProvider>
-      <BrowserRouter>
+      <HashRouter>
         <AssetProvider>
           <AppContent />
         </AssetProvider>
-      </BrowserRouter>
+      </HashRouter>
     </UserProvider>
   );
 }
