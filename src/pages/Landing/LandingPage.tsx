@@ -8,6 +8,7 @@ const LandingPage = () => {
   return (
     <FadeInMotion
       transition={{ duration: 5, ease: "easeOut" }}
+      exit={{ opacity: 0, scale: 5, transition: { duration: 2 } }}
       className={styles.landingPage}
     >
       <Orb
@@ -16,7 +17,11 @@ const LandingPage = () => {
         hue={256}
         forceHoverState={false}
       />
-      <div className={styles.searchBarContainer}>
+      <FadeInMotion
+        transition={{ duration: 5, ease: "easeOut" }}
+        exit={{ opacity: 0, transition: { duration: 0.5 } }}
+        className={styles.searchBarContainer}
+      >
         <div className={styles.searchBarHeader}>
           <img src={Stars} alt="Pip AI Agent" />
           <h2>Pip AI Agent</h2>
@@ -25,7 +30,7 @@ const LandingPage = () => {
         <div className={styles.searchBarWrapper}>
           <SearchAssets />
         </div>
-      </div>
+      </FadeInMotion>
     </FadeInMotion>
   );
 };
