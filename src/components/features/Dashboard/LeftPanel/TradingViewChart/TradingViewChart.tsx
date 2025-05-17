@@ -8,9 +8,9 @@ const TradingViewChart = () => {
 
   useEffect(() => {
     if (!selectedAsset) return;
-    // Prevent duplicate script injection
-    if (document.getElementById("tradingview-widget-script")) {
-      return;
+    // Clear any previous chart iframe or script
+    if (container.current) {
+      container.current.innerHTML = "";
     }
 
     const script = document.createElement("script");
@@ -38,10 +38,9 @@ const TradingViewChart = () => {
     container.current?.appendChild(script);
 
     return () => {
-      // Cleanup script on unmount
-      const existing = document.getElementById("tradingview-widget-script");
-      if (existing && existing.parentNode) {
-        existing.parentNode.removeChild(existing);
+      // Clear chart container on unmount or before next injection
+      if (container.current) {
+        container.current.innerHTML = "";
       }
     };
   }, [selectedAsset]);
