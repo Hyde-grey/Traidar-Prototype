@@ -242,11 +242,38 @@
 /* Responsive Styles */
 @media (max-width: 576px) {
   .chatContainer {
-    height: calc(100% - 60px);
-    padding: 16px;
+    height: 100vh;
+    padding: 8px;
   }
 
   .messageContainer {
     max-width: 90%;
+  }
+
+  .chatContent {
+    flex: 1;
+    margin-bottom: 60px;
+  }
+
+  .chatInputForm {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    background-color: rgba(30, 30, 30, 0.8) !important;
+    border-radius: 0;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    padding: 0.5rem 1rem !important;
+    z-index: 10;
+  }
+
+  .chatInput {
+    font-size: 0.9rem;
+  }
+
+  .chatHeader {
+    display: none;
   }
 }

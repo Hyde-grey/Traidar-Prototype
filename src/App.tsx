@@ -37,7 +37,7 @@ function AppContent() {
       )}
       <div className="contentArea">
         <AnimatePresence mode="wait">
-          <Routes>
+          <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/landing" element={<LandingPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
